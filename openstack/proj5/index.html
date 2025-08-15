@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OpenStack Load Balancing Portfolio</title>
+    <style>
+        /* Reset & base */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0 1rem;
+            background: #f9f9f9;
+            color: #333;
+        }
+
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #222;
+        }
+
+        /* Container */
+        .container {
+            max-width: 960px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 12px rgb(0 0 0 / 0.1);
+        }
+
+        /* Table of Contents */
+        #toc {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            border-radius: 4px;
+        }
+
+        #toc h2 {
+            margin-top: 0;
+        }
+
+        #toc ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        #toc ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Section styling */
+        section {
+            margin-bottom: 3rem;
+        }
+
+        /* Code block */
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 1rem;
+            overflow-x: auto;
+            border-radius: 4px;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body {
+                padding: 0 0.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4f6f9;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        /* CARD */
+        .metric-card {
+            background: linear-gradient(135deg, #fdfdfd, #ffffff);
+            border-left: 6px solid #1f3a93;
+            border-radius: 12px;
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        /* SMOOTH SLIDING OVERLAY */
+        .metric-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(31, 58, 147, 0.07);
+            transform: translateX(-100%);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .metric-card:hover::before {
+            transform: translateX(0);
+        }
+
+        /* TEXT CONTENT */
+        .metric-card h3,
+        .metric-card p,
+        .metric-card a {
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-card h3 {
+            font-size: 1.5rem;
+            color: #1f3a93;
+            margin-bottom: 1rem;
+        }
+
+        .metric-card p {
+            color: #333;
+            line-height: 1.6;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* LIFT EFFECT */
+        .metric-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.08);
+            border-left-color: #5dade2;
+        }
+
+        /* BUTTON */
+        .card-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1f3a93;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: background-color 0.7s ease;
+        }
+
+        .card-button:hover {
+            background-color: #5dade2;
+            color: black;
+            font-weight: 500;
+        }
+
+        .gif-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .demo-gif {
+            max-width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .demo-gif:hover {
+            transform: scale(1.03);
+        }
+
+        .algorithm-advantages {
+            background: rgba(146, 201, 243, 0.3);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid red;
+            /* green for "positive" */
+            color: black;
+        }
+
+        .algorithm-advantages ul {
+            padding-left: 20px;
+        }
+
+        .algorithm-advantages ul li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1
+            style="font-weight: 900; text-align: center; font-size:xx-large; @import url('https://fonts.googleapis.com/css2?family=Ancizar+Sans:ital,wght@0,100..1000;1,100..1000&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap'); font-family: Roboto Slab;">
+            OpenStack: Private Cloud System</h1>
+
+        <nav aria-label="Table of Contents">
+            <h2>Table of Contents</h2>
+            <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#objectives">Objectives/Need of Portfolio</a></li>
+                <li><a href="#visuals">Visuals</a></li>
+                <li><a href="#system-model">System Model</a></li>
+                <li><a href="#algorithms">Algorithms and Data Structures: Business Use Cases and Applications</a></li>
+            </ul>
+        </nav>
+
+
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>Load Balancing in OpenStack Cloud: Investigating Intelligent Data Structures. This project is a deep dive
+                into the advanced algorithms and data structures that power load balancing in OpenStack, enabling
+                enhanced service management and efficiency.</p>
+            <p>OpenStack is a prominent open-source cloud computing platform that provides users with a convenient way
+                to manage large-scale cloud environments. It leverages complex algorithms and data structures to ensure
+                efficiency, reliability, and scalability in load balancing.</p>
+        </section>
+
+        <section id="objectives">
+            <h2>Objectives</h2>
+            <ul>
+                <li>To understand the significance of advanced algorithms and data structures in efficient load
+                    balancing within OpenStack.</li>
+                <li>To explore various business use cases and applications of these algorithms and data structures.</li>
+                <li>To analyze the impact of these technologies on user experience and system performance.</li>
+                <li>To provide insights into data analysis and the role of intelligent data structures in load
+                    balancing.</li>
+            </ul>
+        </section>
+
+        <section id="visuals">
+            <h2>Visuals</h2>
+            <ul>
+                <li><strong>Complete OpenStack Setup</strong>: This image shows the complete OpenStack setup used for
+                    the project.</li>
+                <img src="./completeSetup.png" alt="Placeholder Image" width="600em" style="margin-left: 100px;" />
+
+
+                <li><strong>Networks Created</strong>: This image displays the networks created within the OpenStack
+                    environment.</li>
+                <img src="./network.png" alt="Placeholder Image" width="600em" style="margin-left: 100px;" />
+
+                <li><strong>Router</strong>: This image shows the router configuration within the OpenStack setup.</li>
+                <img src="./router.png" alt="Placeholder Image" width="600em" style="margin-left: 100px;" />
+                <li><strong>Instances Launched</strong>: This image illustrates the instances launched in the OpenStack
+                    environment.</li>
+                <img src="./instances_vm.png" alt="Placeholder Image" width="600em" style="margin-left: 100px;" />
+                <li><strong>Topology</strong>: This image illustrates the topology created in the OpenStack environment.
+                </li>
+                <img src="./topo.png" alt="Placeholder Image" width="600em" style="margin-left: 100px;" />
+                <li><strong>Extented topology and network view</strong>: This image illustrates the large topology upto
+                    which it can be extended for large scale applications.
+                </li>
+                <img src="./n1_PhotoGrid_n2_PhotoGrid (2).jpeg" alt="Placeholder Image" width="600em"
+                    style="margin-left: 80px;" />
+            </ul>
+        </section>
+
+        <section id="system-model">
+            <h2>System Model</h2>
+            <img src="./openstackSystemModel.png" alt="Placeholder Image" width="600em" style="margin-left: 100px;" />
+
+            <p>The following diagrams represents the over all system design of the OpenStack private cloud service</p>
+
+        </section>
+
+        <section id="algorithms">
+            <h2>Algorithms and Data Structures: Business Use Cases and Applications</h2>
+            <p>We will explore mainly two types of Business Cases and the Algorithmic way to understand and impliment
+                them.</p>
+
+            <nav aria-label="Table of Contents">
+                <h3>Navigate to following</h3>
+                <ul>
+                    <li><a href="#routingAlgorithmSection">Routing Algorithms</a></li>
+                    <li><a href="#loadBalancingSection">Load Balancing Algorithms</a></li>
+                </ul>
+            </nav>
+
+        </section>
+
+
+        <section id="#routingAlgorithmSection">
+            <h2
+                style="font-weight: 700; text-align: center; font-size:xx-large; @import url('https://fonts.googleapis.com/css2?family=Ancizar+Sans:ital,wght@0,100..1000;1,100..1000&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); font-family: Ancizar Sans;">
+                Routing Algorithms</h2>
+
+
+            <div class="metric-card">
+                <h3>Dijkstra’s Algorithm</h3>
+                <p> Used for the efficient transfer of packets from source VM to the destination VM in the OpenStack
+                    environment with the non-negative metrix.</p>
+
+
+                <div class="algorithm-advantages">
+                    <h3 class="component-subtitle">Advantages</h3>
+                    <ul>
+                        <li><strong>Optimal Pathfinding with Polynomial Time Complexity:</strong>
+                            Efficiently finds the shortest path in graphs with non-negative weights.
+                            <br>Time Complexity: <code>O((V + E) log V)</code> using binary heap, or <code>O(V²)</code>
+                            using a simple array.
+                        </li>
+                        <li><strong>Deterministic and Greedy Nature:</strong>
+                            Guarantees globally optimal results by always selecting the closest unvisited node, ensuring
+                            reliable path computation in systems like OSPF or OpenStack.
+                        </li>
+                    </ul>
+
+                    <h3 class="component-subtitle">Improvements over Existing Methods</h3>
+                    <ul>
+                        <li><strong>Faster than Exhaustive Search:</strong>
+                            Replaces inefficient exhaustive search methods that had exponential time complexity
+                            <code>O(n!)</code>, enabling practical usage in real-time systems.
+                        </li>
+                        <li><strong>Improved over Bellman-Ford:</strong>
+                            Offers better performance than Bellman-Ford on non-negative graphs, thanks to a more
+                            efficient greedy approach that scales well in large networks.
+                        </li>
+                    </ul>
+                </div>
+
+
+                <p><a href="./dijkstra.html" class="card-button">View Me</a></p>
+            </div>
+
+            <div class="metric-card">
+                <h3>Bellman-Ford Algorithm</h3>
+                <p>Used for reliable packet routing between source and destination VMs in OpenStack environments,
+                    especially when network links may have negative metrics or require loop detection.</p>
+                <div class="algorithm-advantages">
+                    <h3 class="component-subtitle">Advantages</h3>
+                    <ul>
+                        <li><strong>Handles Negative Edge Weights:</strong>
+                            Unlike Dijkstra’s algorithm, Bellman-Ford can compute shortest paths even in graphs with
+                            negative edge weights.
+                            <br>Time Complexity: <code>O(V × E)</code>
+                        </li>
+                        <li><strong>Detects Negative Weight Cycles:</strong>
+                            Capable of identifying and reporting cycles that would otherwise cause incorrect shortest
+                            path calculations, increasing reliability.
+                        </li>
+                    </ul>
+
+                    <h3 class="component-subtitle">Improvements over Existing Methods</h3>
+                    <ul>
+                        <li><strong>Broader Applicability than Dijkstra:</strong>
+                            Dijkstra fails in the presence of negative weights, whereas Bellman-Ford remains functional
+                            and accurate in such conditions.
+                        </li>
+                        <li><strong>Improved Reliability in Fault-Tolerant Networks:</strong>
+                            Before Bellman-Ford, systems relied on brute-force or heuristic methods without guarantees
+                            of accuracy in complex weighted graphs. Bellman-Ford introduced a mathematically sound
+                            approach.
+                        </li>
+                    </ul>
+                </div>
+                <p><a href="./bellmanFord.html" class="card-button">View Me</a></p>
+            </div>
+
+
+            <div class="metric-card">
+                <h3>Prims Algorithm</h3>
+                <p>Used for building loop-free, minimum-cost multicast trees or overlay networks among VMs in OpenStack
+                    environments.</p>
+                <div class="algorithm-advantages">
+                    <h3 class="component-subtitle">Advantages</h3>
+                    <ul>
+                        <li><strong>Builds Minimum Cost Spanning Tree:</strong>
+                            Connects all network nodes (e.g., VMs, switches) with the least total edge weight, ideal for
+                            efficient multicast or group broadcast structures.
+                            <br>Time Complexity: <code>O(E log V)</code> (with Min-Heap and Adjacency List)
+                        </li>
+                        <li><strong>Optimized for Dense Graphs:</strong>
+                            Performs efficiently in dense networks with many interconnections—common in virtualized
+                            cloud environments like OpenStack.
+                        </li>
+                        <li><strong>Incremental Tree Growth:</strong>
+                            Adds the minimum cost edge at each step, allowing for flexible, on-demand expansion of the
+                            network topology.
+                        </li>
+                    </ul>
+
+                    <h3 class="component-subtitle">Improvements over Existing Methods</h3>
+                    <ul>
+                        <li><strong>Bandwidth-Efficient Multicasting:</strong>
+                            Replaces flooding or redundant link usage with optimal broadcast trees, significantly
+                            reducing network congestion and overhead.
+                        </li>
+                        <li><strong>Deterministic Topology Formation:</strong>
+                            Unlike naive or randomized topology generation, Prim’s algorithm ensures a predictable,
+                            efficient connection path structure across VMs.
+                        </li>
+                        <li><strong>Loop-Free and Cost-Effective:</strong>
+                            Guarantees loop-free routing paths while minimizing the cumulative cost—key in
+                            SDN-controlled OpenStack data center deployments.
+                        </li>
+                    </ul>
+                </div>
+
+                <p><a href="./prims.html" class="card-button">View Me</a></p>
+            </div>
+
+
+            <div class="metric-card">
+                <h3>A* Search Algorithm</h3>
+                <p>A* (A-star) is a graph traversal and pathfinding algorithm. It finds the shortest path from a start
+                    node to a goal node efficiently by using:
+                <ul>
+                    <li>g(n): The cost to reach the node n from the start.</li>
+                    <li>h(n): A heuristic estimate of the cost to reach the goal from node n.</li>
+                </ul>
+                </p>
+                <p>It picks nodes to explore based on the sum f(n) = g(n) + h(n). The heuristic h(n) helps guide the
+                    search toward the goal, which makes A* faster than uninformed search algorithms like Dijkstra's.</p>
+
+                <div class="algorithm-advantages">
+                    <h3 class="component-subtitle">Advantages</h3>
+                    <ul>
+                        <li><strong>Heuristic-Guided Optimal Pathfinding:</strong>
+                            Uses heuristic functions to estimate remaining cost, allowing it to prioritize promising
+                            paths and find the shortest route efficiently.
+                            <br>Time Complexity: <code>O(E)</code> in practice, faster than uninformed algorithms when a
+                            good heuristic is used.
+                        </li>
+                        <li><strong>Efficient Resource Utilization:</strong>
+                            Minimizes network latency and bandwidth consumption by quickly identifying optimal routing
+                            paths between VMs, users, and data centers.
+                        </li>
+                        <li><strong>Adaptable to Dynamic Cloud Environments:</strong>
+                            Supports real-time routing adjustments by recalculating paths based on changing network
+                            loads and topology, ideal for virtualized, multi-tenant clouds like OpenStack and GCP.
+                        </li>
+                    </ul>
+
+                    <h3 class="component-subtitle">Improvements over Existing Methods</h3>
+                    <ul>
+                        <li><strong>Faster than Dijkstra’s Algorithm:</strong>
+                            By incorporating heuristics, A* reduces the search space significantly, leading to quicker
+                            pathfinding in large-scale cloud networks.
+                        </li>
+                        <li><strong>Goal-Directed Search:</strong>
+                            Unlike traditional shortest-path algorithms that explore indiscriminately, A* focuses
+                            computation towards the target VM or user endpoint, improving efficiency in routing.
+                        </li>
+                        <li><strong>Scalable to Complex Cloud Topologies:</strong>
+                            Handles dense, highly interconnected cloud environments by effectively balancing exploration
+                            cost and heuristic guidance, making it suitable for GCP’s global infrastructure.
+                        </li>
+                    </ul>
+                </div>
+                <p><a href="./aStar.html" class="card-button">View Me</a></p>
+            </div>
+
+
+
+
+        </section>
+
+
+
+
+
+
+
+
+        <!-- load balancing -->
+        <section id="#loadBalancingSection">
+            <h2 style="font-weight: 700; text-align: center; font-size:xx-large;
+@import url('https://fonts.googleapis.com/css2?family=Ancizar+Sans:ital,wght@0,100..1000;1,100..1000&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); font-family: Ancizar Sans;
+">Load Balancing Algorithms</h2>
+            <section>
+
+                <section class="gif-section">
+                    <img src="./Cover_Image.webp" alt="Load Balancing GIF" class="demo-gif" />
+                </section>
+
+                <nav aria-label="Table of Contents">
+                    <ul>
+                        <li><a href="#data-collection">Data Collection and Monitoring</a></li>
+                        <li><a href="#aco">Ant Colony Optimization (ACO)</a></li>
+                        <li><a href="#weighted-rr">Weighted Round Robin Load Balancing</a></li>
+                        <li><a href="#round-robin">Round Robin Load Balancing</a></li>
+                        <li><a href="#least-connections">Least Connections Load Balancing</a></li>
+                        <li><a href="#priority-queue">Priority Queue Load Balancing</a></li>
+                        <li><a href="#references">References</a></li>
+                    </ul>
+                </nav>
+
+
+                <p>
+                    The above is the simple understanding of the load balancing in the cloud environment where there are
+                    100
+                    user on one server, 10 an another and 200 on last the load distributer distributed the load to the
+                    server
+                    with less number of users. This is the simple example of understanding the load balancing.
+                </p>
+
+                <h3>Description</h3>
+                <ul>
+                    <li><strong>User Request:</strong> Incoming requests from users that need to be processed by the
+                        cloud
+                        instances.</li>
+                    <li><strong>Load Balancing Algorithms:</strong> Decides how to distribute the incoming requests
+                        among
+                        the available instances using different algorithms.</li>
+                    <li><strong>Monitor Resource Usage:</strong> Continuously monitors resource usage (CPU, memory,
+                        etc.) of
+                        each instance to provide real-time data for load balancing decisions.</li>
+                    <li><strong>Instances:</strong> Virtual machines that process user requests, workload distributed
+                        based
+                        on selected algorithm and monitored resource usage.</li>
+                </ul>
+            </section>
+
+            <div class="metric-card">
+                <h3>Data Collection Module</h3>
+                <p>
+                    Simulates real-time CPU and memory usage, logs instance metrics, normalizes data, and supports
+                    performance monitoring in cloud environments.
+                </p>
+                <a href="./DataCollection.html" class="card-button">View Me</a>
+            </div>
+
+            <div class="metric-card">
+                <h3>Ant Colony Optimization (ACO) for Load Balancing</h3>
+                <p>ACO is inspired by ants’ foraging behavior, used here to dynamically distribute requests by
+                    simulating
+                    pheromone trails.</p>
+
+
+                <section>
+                    <div class="algorithm-advantages">
+                        <h3 class="component-subtitle">Advantages</h3>
+                        <ul>
+                            <li><strong>Adaptive Learning:</strong> Continuously updates the routing paths based on
+                                real-time data, leading to better performance over time.</li>
+                            <li><strong>Scalability:</strong> Efficiently manages a large number of instances by
+                                distributing load based on pheromone trails.</li>
+                            <li><strong>Resilience:</strong> Handles dynamic and unpredictable loads effectively by
+                                leveraging the collective learning of multiple agents (ants).</li>
+                        </ul>
+
+                        <h3 class="component-subtitle">Improvements over Existing Methods</h3>
+                        <ul>
+                            <li><strong>Enhanced Decision Making:</strong> Utilizes historical performance data through
+                                pheromone trails, leading to more informed and effective load distribution decisions.
+                            </li>
+                            <li><strong>Optimized Resource Utilization:</strong> Ensures optimal use of available
+                                resources
+                                by dynamically adapting to changing conditions.</li>
+                            <li><strong>Reduced Bottlenecks:</strong> Minimizes the risk of overloading individual
+                                instances
+                                by distributing requests based on real-time metrics and historical data.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <p><a href="./Ant.html" class="card-button">View Me</a></p>
+            </div>
+
+            <div class="metric-card">
+                <h3>Round Robin Load Balancing</h3>
+                <p>A simple method distributing requests in a circular order to balance load evenly.</p>
+                <section>
+                    <div class="algorithm-advantages">
+                        <h3 class="component-subtitle">Advantages</h3>
+                        <ul>
+                            <li><strong>Simple and Easy to Implement:</strong> The algorithm's logic is straightforward,
+                                making it ideal for quick deployment.</li>
+                            <li><strong>Equal Traffic Distribution:</strong> Ensures all instances receive approximately
+                                the
+                                same number of requests.</li>
+                        </ul>
+
+                        <h3 class="component-subtitle">Improvements over Existing Methods</h3>
+                        <ul>
+                            <li><strong>Fair Rotation:</strong> Distributes requests in a circular manner, reducing the
+                                risk
+                                of overwhelming any single instance.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <p><a href="./rr.html" class="card-button">View Me</a></p>
+            </div>
+
+            <div class="metric-card">
+                <h3>Weighted Round Robin Load Balancing</h3>
+                <p>This method assigns weights to instances, so more powerful ones handle more requests, improving
+                    resource
+                    utilization and performance.</p>
+
+                <section>
+                    <div class="algorithm-advantages">
+                        <h3 class="component-subtitle">Advantages</h3>
+                        <ul>
+                            <li><strong>Capability-Based Distribution:</strong> Distributes traffic according to the
+                                processing power or weight assigned to each instance.</li>
+                            <li><strong>Optimized Resource Utilization:</strong> Ensures that stronger instances handle
+                                more
+                                requests, maximizing overall system efficiency.</li>
+                        </ul>
+
+                        <h3 class="component-subtitle">Improvements over Existing Methods</h3>
+                        <ul>
+                            <li><strong>Nuanced Load Distribution:</strong> Takes into account the different capacities
+                                of
+                                instances, leading to smarter, performance-driven request routing.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <p><a href="./weightedRR.html" class="card-button">View Me</a></p>
+            </div>
+
+            <div class="metric-card">
+                <h3>Least Connections Load Balancing</h3>
+                <p>Assigns requests to the instance with the fewest active connections, preventing bottlenecks.</p>
+                <section>
+                    <div class="algorithm-advantages">
+                        <h3 class="component-subtitle">Advantages</h3>
+                        <ul>
+                            <li><strong>Dynamic Request Allocation:</strong> Directs traffic to instances with the
+                                fewest
+                                active connections in real time.</li>
+                            <li><strong>Prevents Bottlenecks:</strong> Distributes load efficiently to maintain
+                                consistent
+                                system performance and responsiveness.</li>
+                        </ul>
+
+                        <h3 class="component-subtitle">Improvements over Existing Methods</h3>
+                        <ul>
+                            <li><strong>Adaptive Load Balancing:</strong> Responds to real-time traffic conditions,
+                                unlike
+                                static methods, minimizing the risk of overloading any instance.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <p><a href="./leastConnection.html" class="card-button">View Me</a></p>
+            </div>
+
+            <div class="metric-card">
+                <h3>Priority Queue Load Balancing</h3>
+                <p>Requests assigned based on priority, ensuring critical tasks are handled first.</p>
+                <section>
+                    <h2>Advantages & Improvements</h2>
+                    <div class="algorithm-advantages">
+                        <h3 class="component-subtitle">Advantages</h3>
+                        <ul>
+                            <li><strong>Priority-Based Handling:</strong> Assigns requests based on predefined
+                                priorities,
+                                ensuring that more critical tasks are handled first.</li>
+                            <li><strong>Dynamic Adjustment:</strong> Can be dynamically adjusted based on real-time
+                                metrics,
+                                enabling flexible and responsive load balancing.</li>
+                        </ul>
+
+                        <h3 class="component-subtitle">Improvements over Existing Methods</h3>
+                        <ul>
+                            <li><strong>Enhanced Resource Allocation:</strong> Improves efficiency by considering task
+                                priority in distributing resources.</li>
+                            <li><strong>Adaptive Prioritization:</strong> Allows for dynamic adjustment of instance
+                                priorities based on current load and performance metrics.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <a href="./priorityQueue.html" class="card-button">View Me</a>
+            </div>
+
+            <section id="references">
+                <h2>References</h2>
+                <ul>
+                    <li><a href="https://docs.openstack.org" target="_blank" rel="noopener noreferrer">OpenStack Cloud
+                            Software - Official Documentation</a></li>
+                    <li>M. Mitzenmacher, “The Power of Two Choices in Randomized Load Balancing,” IEEE Transactions on
+                        Parallel and Distributed Systems, 2001.</li>
+                    <li>T. Xie and X. Qin, “Improving security for periodic tasks in embedded systems through
+                        scheduling,”
+                        ACM TECS, 2007.</li>
+                    <li>P. J. Ezhilchelvan et al., “Adaptive load sharing and balancing in a distributed system of
+                        functional modules,” IEEE Distributed Computing Systems, 1992.</li>
+                    <li>C. Blum, “Ant colony optimization: Introduction and recent trends,” Physics of Life Reviews,
+                        2005.
+                    </li>
+
+                    <li>
+                        https://4.bp.blogspot.com/-SbnM4lE9QOw/Xi6kvBU-nGI/AAAAAAAAAmc/xcjPRXjDagIQ7lClPczIdyQeQ13l2sNPACLcBGAsYHQ/s1600/architecture.png
+                    </li>
+                    <li>https://www.geeksforgeeks.org/introduction-to-ant-colony-optimization/</li>
+                    <li>https://en.wikipedia.org/wiki/Mathematical_optimization#Optimization_problems</li>
+                </ul>
+            </section>
+
+        </section>
+    </div>
+</body>
+
+</html>

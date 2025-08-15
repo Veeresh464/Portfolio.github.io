@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resource Management in OS</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #003366;
+            margin-top: 0;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .code-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #0056b3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .code-link:hover {
+            text-decoration: underline;
+        }
+
+        .algo-type {
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 3rem;
+            padding: 1rem;
+            background-color: #e9ecef;
+        }
+
+        .figure-label {
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card h2 {
+            color: #003366;
+            margin-bottom: 0.5rem;
+            font-size: medium;
+        }
+
+        .card p {
+            margin: 0.4rem 0;
+            line-height: 1.6;
+        }
+
+        .card .label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        table {
+            width: 70%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        caption {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .credits {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-top: 20px;
+        }
+
+        .credits a {
+            color: #4285F4;
+            text-decoration: none;
+        }
+
+        .credits a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-link {
+            background-color: #0077cc;
+            /* deep blue */
+            color: #fff;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 30px;
+        }
+
+        .btn-link:hover {
+            background-color: #005fa3;
+            /* slightly darker on hover */
+        }
+
+
+        @media (max-width: 600px) {
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        Resource Management in Operating Systems
+    </header>
+
+    <main>
+        <section>
+            <h2>Overview</h2>
+            <p>
+                Resource management involves the efficient allocation and utilization of system resources such as CPU,
+                memory, I/O devices, and network bandwidth. The goal is to ensure that applications and processes run
+                smoothly, maximizing system performance and user satisfaction.
+            </p>
+        </section>
+
+        <section>
+            <h2>Red-Black Trees</h2>
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/redblackimg.png" alt="Red-Black" width="500px">
+
+            <div class="credits">
+                Credits:
+                <a href="https://www.geeksforgeeks.org/introduction-to-red-black-tree/" target="_blank">GFG</a>.
+            </div>
+            </p>
+            <p>
+                Red-Black Trees are self-balancing binary search trees used to maintain ordered sets of data efficiently
+                under dynamic changes—like memory or process allocations.
+            </p>
+
+            <div class="card">
+                <h2>1. Binder IPC (Inter-Process Communication)</h2>
+                <p><span class="label">How Used:</span> Used within the Linux kernel’s Binder driver to manage binder
+                    objects and references efficiently.</p>
+                <p><span class="label">Why RBT?</span> Enables fast search, insert, and delete operations with O(log n)
+                    time complexity.</p>
+                <p><span class="label">Example:</span> When an app calls a system service (like
+                    <code>ActivityManagerService</code>), Binder uses RBTs to track and lookup Binder nodes efficiently.
+                </p>
+                <p><span class="label">Source:</span> <code>drivers/android/binder.c</code></p>
+            </div>
+
+            <div class="card">
+                <h2>2. Virtual Memory Areas (VMAs)</h2>
+                <p><span class="label">How Used:</span> The kernel uses RBTs to manage VMAs for each process.</p>
+                <p><span class="label">Why RBT?</span> Ensures efficient search and merge of memory regions when memory
+                    is allocated or freed.</p>
+                <p><span class="label">Example:</span> When an app requests memory (e.g., via <code>malloc()</code>),
+                    the kernel uses the RBT to locate and manage VMAs.</p>
+                <p><span class="label">Source:</span> <code>mm/mmap.c</code> (see <code>struct mm_struct</code>)</p>
+            </div>
+
+            <div class="card">
+                <h2>3. Completely Fair Scheduler (CFS)</h2>
+                <p><span class="label">How Used:</span> CFS uses a Red-Black Tree to organize runnable tasks by their
+                    virtual runtimes.</p>
+                <p><span class="label">Why RBT?</span> Maintains fair scheduling order and enables fast insertion and
+                    retrieval of tasks.</p>
+                <p><span class="label">Example:</span> The CPU picks the next task to run by choosing the leftmost node
+                    (least runtime).</p>
+                <p><span class="label">Source:</span> <code>kernel/sched/fair.c</code> (see <code>struct cfs_rq</code>)
+                </p>
+            </div>
+
+            <p>
+                <table>
+                    <caption>Average and Worst Case Analysis (Red-Black Tree)</caption>
+                    <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>Average Case</th>
+                            <th>Worst Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Search</td>
+                            <td>O(log n)</td>
+                            <td>O(log n)</td>
+                        </tr>
+                        <tr>
+                            <td>Insert</td>
+                            <td>O(log n)</td>
+                            <td>O(log n)</td>
+                        </tr>
+                        <tr>
+                            <td>Delete</td>
+                            <td>O(log n)</td>
+                            <td>O(log n)</td>
+                        </tr>
+                        <tr>
+                            <td>Space</td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <strong>Cons:</strong> Implementation complexity
+            </p>
+
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a class="btn-link" href="./code/RedBlack.cpp" target="_blank">
+                    📘 Code: Red-Black Trees Code
+                </a>
+            </div>
+
+        </section>
+
+        <section>
+            <h2>Segment Trees and Binary Indexed Tree</h2>
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/segment.png" alt="Red-Black" width="500px">
+            </p>
+
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/ad242733-27dd-49af-bc12-11ef1997dd27.png" alt="Red-Black" width="500px">
+            </p>
+            <p>
+                Segment trees and Fenwick Trees efficiently handle range queries and updates. In OS resource monitering the segment trees and BIT has appealing role for maintaining the usage details of the operating system. The best example for this
+                is the Android Digital Wellbeing which shows the usgae history and notification of the device throughout
+                the span of the time.
+
+                The advantage of the segment tree can be utilized for getting the maximum usage of the application, max
+                utilization of the device resources like which apps have used the resources and for what amount of time
+                the cpu was utilized by the process can be viewed easily.
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/IMG_0398.jpeg" alt="Red-Black" width="500px">
+            </p>
+            </p>
+
+            <table>
+                <caption>Operation wise Complexity Overview (Fenwick Tree)</caption>
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Time Complexity</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Build</td>
+                        <td>O(n log n)</td>
+                        <td>Builds the tree from input array by updating each element in log(n) time</td>
+                    </tr>
+                    <tr>
+                        <td>Query</td>
+                        <td>O(log n)</td>
+                        <td>Fetches prefix sum in log(n) time</td>
+                    </tr>
+                    <tr>
+                        <td>Update</td>
+                        <td>O(log n)</td>
+                        <td>Updates a single element and propagates changes in log(n) time</td>
+                    </tr>
+                    <tr>
+                        <td>Space</td>
+                        <td>O(n)</td>
+                        <td>Uses extra array to store cumulative frequencies</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <caption>Operation-wise Complexity Overview (Segment Trees)</caption>
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Time Complexity</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Build</td>
+                        <td>O(n)</td>
+                        <td>Builds the tree from input array using bottom-up merging</td>
+                    </tr>
+                    <tr>
+                        <td>Query</td>
+                        <td>O(log n)</td>
+                        <td>Fetches range sum/min/max in log(n) time</td>
+                    </tr>
+                    <tr>
+                        <td>Update</td>
+                        <td>O(log n)</td>
+                        <td>Updates a single element by updating log(n) nodes</td>
+                    </tr>
+                    <tr>
+                        <td>Space</td>
+                        <td>O(2n)</td>
+                        <td>Uses extra space to store segment nodes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a class="btn-link" href="https://devsenv.com/tutorials/segment-tree-01" target="_blank">
+                    📘 Read About Segment Trees on Medium
+                </a>
+                <a class="btn-link" href="./code/segmentTrees.java" target="_blank">
+                    📘 Code: Segment Trees Code
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Bin-Packing Algorithms</h2>
+
+            <p>
+            <ul>
+                <li>These algorithms optimize the placement of resources (such as processes or data) into predefined
+                    containers (like memory blocks or disk sectors).</li>
+                <li>Bin-packing algorithms are used in memory management (allocating blocks of memory to processes),
+                    disk management (storing files in disk sectors), and in cloud computing (allocating virtual machines
+                    to physical hosts).</li>
+                <li>The aim of this algorithm is to efficiently pack the items in bins such that minimum number of bins
+                    are utilised and all items are packed.</li>
+            </ul>
+            </p>
+
+
+            <p style="text-align: center; justify-content: center;">
+                <img src="./ResourceManagement/Firstfit.png" alt="Red-Black" width="300px">
+
+            <p style="text-align: center; justify-content: center;">1.Quickly allocates resources to the first available
+                slot, enhancing allocation speed.</p>
+            </p>
+
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/Bestfit.png" alt="Red-Black" width="300px">
+            <p style="text-align: center; justify-content: center;">2.Minimizes wasted resources by placing them in the
+                tightest available slot.</p>
+            </p>
+
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/Worstfit.png" alt="Red-Black" width="300px">
+            <p style="text-align: center; justify-content: center;">3.Distributes resources to the largest available
+                slot
+                to balance load over time.</p>
+            </p>
+
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>First Fit (FF)</td>
+                        <td>Place each item in the first bin that can accommodate it.</td>
+                    </tr>
+                    <tr>
+                        <td>Best Fit (BF)</td>
+                        <td>Place each item in the bin with the least remaining space that still accommodates the item.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Worst Fit (WF)</td>
+                        <td>Place each item in the bin with the most remaining space that still accommodates the item.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>First Fit Decreasing (FFD)</td>
+                        <td>Sort items in decreasing order of size and use the First Fit algorithm.</td>
+                    </tr>
+                    <tr>
+                        <td>Best Fit Decreasing (BFD)</td>
+                        <td>Sort items in decreasing order of size and use the Best Fit algorithm.</td>
+                    </tr>
+                    <tr>
+                        <td>First Fit Decreasing by Width (FFDW)</td>
+                        <td>Sort items in decreasing order of their width and use the First Fit algorithm.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="text-align: center; margin-top: 30px;">
+                    <a class="btn-link"
+                        href="https://www.geeksforgeeks.org/bin-packing-problem-minimize-number-of-used-bins/"
+                        target="_blank">
+                        📘 Read About Bin Packing Algorithm on GFG
+                    </a>
+            </div>
+
+        </section>
+        <section>
+            <h2>Skip Lists</h2>
+            <p>
+                The time complexity required to find an element in a sorted array is O(log n) using binary search,
+                whereas the search operation in a sorted or unsorted list takes O(n), which is much more time-consuming
+                compared to arrays. By using a skip list, if the list is sorted, we can reduce the time complexity of
+                the search to O(log n), which is significantly more efficient.
+            </p>
+
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/2019e8da-7b8a-47c9-a747-9d874df23a8c.png" alt="Red-Black" width="500px">
+            </p>
+
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/SkipLists.jpeg" alt="Red-Black" width="500px">
+            </p>
+
+            <p>
+                The skip list is a probabilistic data structure with a hierarchy of sorted lists. A perfect skip list is
+                one where the number of levels equals log n, where n is the number of elements in the list. In Android
+                OS, this can be used for search operations in the file system or in media playlists, where elements are
+                sorted in some order, such as alphabetically or by size.
+            </p>
+
+
+            <!-- images of the skip list -->
+
+            <table>
+                <caption>Average and Worst Case Analysis</caption>
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Average Case</th>
+                        <th>Worst Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Search</td>
+                        <td>O(log n)</td>
+                        <td>O(n)</td>
+                    </tr>
+                    <tr>
+                        <td>Insert</td>
+                        <td>O(log n)</td>
+                        <td>O(n)</td>
+                    </tr>
+                    <tr>
+                        <td>Delete</td>
+                        <td>O(log n)</td>
+                        <td>O(n)</td>
+                    </tr>
+                    <tr>
+                        <td>Space</td>
+                        <td>O(n)</td>
+                        <td>O(nlogn)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <b>Optimization to Skip Lists from Probabilistic to Deterministic Data Structure: </b>
+            <p>
+                If a skip list is maintained deterministically rather than relying on random level promotion, its height can be strictly controlled to stay at O(log n). In this approach, nodes are promoted to higher levels according to fixed rules (for example, every 2nd node appears in level 2, every 4th in level 3, and so on), ensuring the upper levels are evenly populated. This guarantees that search, insert, and delete operations will always traverse only a logarithmic number of nodes, eliminating the rare but possible O(n) worst-case scenario found in randomized skip lists. As a result, the time complexity for all major operations remains O(log n) even in the worst case, similar to a balanced binary search tree.
+            </p>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a class="btn-link" href="https://www.geeksforgeeks.org/skip-list/"
+                    target="_blank">
+                    📘 Read About Skip Lists on GFG
+                </a>
+            </div>
+        </section>
+
+
+        <section>
+            <h2>References: </h2>
+            <p>
+            <ul>
+                <li>https://developer.android.com/topic/performance/memory-management</li>
+                <li>https://www.linuxjournal.com/content/android-low-memory-killer-or-out</li>
+                <li>https://www.esper.io/blog/android-dessert-bites-22-linux-memory-management-38419756</li>
+                <li>https://medium.com/swlh/exploring-the-bin-packing-problem-f54a93ebdbe5</li>
+                <li>https://medium.com/@tech_future/bin-packing-nfd-algorithm-custom-more-reliable-algorithm-alternative-cebbe7c27ede
+                </li>
+            </ul>
+            </p>
+        </section>
+    </main>
+
+
+    <footer>
+        Back to <a href="/" style="color:#003366; font-weight: bold;">Home</a> | Portfolio maintained by Veeresh S
+        Hiremath.<br />
+        This page was generated using GitHub Pages.
+    </footer>
+</body>
+
+</html>

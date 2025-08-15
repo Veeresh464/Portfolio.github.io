@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android OS: Core Functionalities & Optimization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Google+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --android-green: #3ddc84;
+            --android-dark: #202124;
+            --android-light: #f8f9fa;
+            --google-blue: #4285f4;
+            --google-red: #ea4335;
+            --google-yellow: #fbbc05;
+            --google-green: #34a853;
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--android-light);
+            color: var(--android-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--android-dark), var(--android-green));
+            color: white;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .android-logo {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, var(--android-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--android-dark);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--android-green);
+            border-radius: 2px;
+        }
+
+        .intro-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            margin-bottom: 3rem;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .intro-card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .intro-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .function-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .function-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all var(--transition-speed);
+            transform: translateY(20px);
+            opacity: 0;
+            border-top: 4px solid var(--android-green);
+        }
+
+        .function-card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .function-card:nth-child(2n) {
+            border-top-color: var(--google-blue);
+        }
+
+        .function-card:nth-child(3n) {
+            border-top-color: var(--google-red);
+        }
+
+        .function-card:nth-child(4n) {
+            border-top-color: var(--google-yellow);
+        }
+
+        .function-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .function-card h3 {
+            color: var(--android-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .business-cases {
+            background: var(--android-dark);
+            color: white;
+            padding: 4rem 0;
+        }
+
+        .business-cases .section-title {
+            color: white;
+        }
+
+        .business-cases .section-title::after {
+            background: var(--google-blue);
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .case-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all var(--transition-speed);
+            transform: scale(0.95);
+            opacity: 0;
+            border-left: 4px solid var(--android-green);
+        }
+
+        .case-card.visible {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .case-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.03);
+        }
+
+        .case-card h3 {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .case-card p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .woa-section {
+            background: linear-gradient(135deg, #f5f7fa, #e4e8eb);
+        }
+
+        .woa-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            margin-top: 2rem;
+        }
+
+        .woa-features {
+            margin-top: 2rem;
+        }
+
+        .woa-feature {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .woa-feature:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .woa-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--android-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            color: white;
+            font-weight: bold;
+        }
+
+        .complexity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .complexity-table th,
+        .complexity-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .complexity-table th {
+            background: var(--android-dark);
+            color: white;
+            font-weight: 500;
+        }
+
+        .complexity-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .complexity-table tr:hover {
+            background: rgba(61, 220, 132, 0.1);
+        }
+
+        footer {
+            background: var(--android-dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+
+        .footer-links a:hover {
+            color: var(--android-green);
+        }
+
+        .copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .btn-link {
+            background-color: #0077cc;
+            /* deep blue */
+            color: #fff;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 30px;
+        }
+
+        .btn-link:hover {
+            background-color: #005fa3;
+            /* slightly darker on hover */
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Scroll animations */
+        [data-animate] {
+            transition: all 0.6s ease-out;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .function-grid,
+            .case-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 3rem 0;
+            }
+
+            .card-hover-overlay {
+                transition: opacity 0.4s ease, transform 0.4s ease;
+            }
+
+            .card:hover .card-hover-overlay {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <svg class="android-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                <path
+                    d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v7c0 .83.67 1.5 1.5 1.5S5 17.33 5 16.5v-7C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v7c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-7c0-.83-.67-1.5-1.5-1.5zm-4.97-5.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.85 1.23 12.95 1 12 1c-.96 0-1.86.23-2.66.63L7.85.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.31 1.31C6.97 3.26 6 5.01 6 7h12c0-1.99-.97-3.75-2.47-4.84zM10 5H9V4h1v1zm5 0h-1V4h1v1z" />
+            </svg>
+            <h1>Android Operating System</h1>
+            <p class="subtitle">Optimized Performance through Advanced Data Structures and Algorithms</p>
+        </div>
+    </header>
+
+    <section>
+        <div class="container">
+            <h2 class="section-title">Introduction</h2>
+            <div class="intro-card" data-animate>
+                <p>Android is an operating system based on a modified version of the Linux kernel and other open-source
+                    software, designed primarily for touchscreen-based mobile devices such as smartphones and tablets.
+                    Android has historically been developed by a consortium of developers known as the Open Handset
+                    Alliance, but its most widely used version is primarily developed by Google. First released in 2008,
+                    Android is the world's most widely used operating system. The latest version, released on October
+                    15, 2024, is Android 15.</p>
+
+                <p>
+                    Android is like the brain of your phone. It manages everything your device does, from running apps to
+                    controlling hardware like the touchscreen, camera, and sensors. It acts as the bridge between the
+                    software (apps, games) and the physical components inside your phone.
+                </p>
+            </div>
+
+            <h2 class="section-title">Functionalities of Android OS</h2>
+            <div class="function-grid">
+                <div class="function-card" data-animate>
+                    <h3>Memory management</h3>
+                    <p>Android avoids swapping and instead kills background apps to free memory quickly, ensuring better performance, battery life, and user experience on mobile devices.</p>
+                </div>
+                <div class="function-card" data-animate>
+                    <h3>Process scheduling</h3>
+                    <p>Utilizes the Linux Completely Fair Scheduler (CFS) with Android-specific optimizations</p>
+                </div>
+                <div class="function-card" data-animate>
+                    <h3>Error detection and handling</h3>
+                    <p>Robust sandboxing and crash reporting mechanisms</p>
+                </div>
+                <!-- <div class="function-card" data-animate>
+                    <h3>I/O management</h3>
+                    <p>Optimized for flash storage with F2FS filesystem support</p>
+                </div> -->
+                <!-- <div class="function-card" data-animate>
+                    <h3>Device management</h3>
+                    <p>Hardware Abstraction Layer (HAL) for consistent hardware interaction</p>
+                </div> -->
+                <div class="function-card" data-animate>
+                    <h3>File management</h3>
+                    <p>Scoped storage for secure file access in Android 10+</p>
+                </div>
+                <!-- <div class="function-card" data-animate>
+                    <h3>Security</h3>
+                    <p>SELinux, verified boot, and monthly security updates</p>
+                </div> -->
+                <div class="function-card" data-animate>
+                    <h3>System monitoring</h3>
+                    <p>Advanced battery and performance monitoring tools</p>
+                </div>
+                <div class="function-card" data-animate>
+                    <h3>Network management</h3>
+                    <p>Intelligent network selection and data saving features</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="business-cases">
+        <div class="container">
+            <h2 class="section-title">Android OS Business Cases</h2>
+            <p>Following business cases are identified and presented for Android OS optimization</p>
+
+            <div class="case-grid">
+                <div class="case-card" data-animate>
+                    <h3>Resource Management</h3>
+                    <p>Optimizing battery, CPU, and memory usage across apps</p>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a class="btn-link" href="./resourceManagement.html" target="_blank">
+                            view me
+                        </a>
+                    </div>
+
+                </div>
+                <div class="case-card" data-animate>
+                    <h3>Job Scheduling</h3>
+                    <p>Optimizing the process scheduling for resources</p>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a class="btn-link" href="./jobScheduling.html" target="_blank">
+                            view me
+                        </a>
+                    </div>
+                </div>
+                <div class="case-card" data-animate>
+                    <h3>Network Management</h3>
+                    <p>Smart data usage and network selection algorithms</p>
+                     <div style="text-align: center; margin-top: 30px;">
+                        <a class="btn-link" href="./networkManagement.html" target="_blank">
+                            view me
+                        </a>
+                    </div>
+                </div>
+                <div class="case-card" data-animate>
+                    <h3>Cache Management</h3>
+                    <p>Scoped storage implementation and optimization</p>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a class="btn-link" href="./cacheManagement.html" target="_blank">
+                            view me
+                        </a>
+                    </div>
+                </div>
+                <div class="case-card" data-animate>
+                    <h3>System State Exploration</h3>
+                    <p>analyzing all possible configurations and transitions of an operating system.</p>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a class="btn-link" href="./SystemStateExploration.html" target="_blank">
+                            view me
+                        </a>
+                    </div>
+                </div>
+                <div class="case-card" data-animate>
+                    <h3>Sorting Algorithms</h3>
+                    <p>Sorting the files based on the size, letters etc.</p>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a class="btn-link" href="./sortingAlgorithms.html" target="_blank">
+                            view me
+                        </a>
+                    </div>
+                </div>
+                <div class="case-card" data-animate>
+                    <h3>File and Recent Search Storage</h3>
+                    <p>Word Prediction and Storage.</p>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a class="btn-link" href="./fileSystem.html" target="_blank">
+                            view me
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2 class="section-title">Time and Space Complexities in Android</h2>
+            <p>Key algorithms and their complexities relevant to Android OS operations</p>
+
+            <table class="complexity-table" data-animate>
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Time Complexity</th>
+                        <th>Space Complexity</th>
+                        <th>Android Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Red-Black Trees</td>
+                        <td>O(log n)</td>
+                        <td>O(n)</td>
+                        <td>Process scheduling, memory management</td>
+                    </tr>
+                    <tr>
+                        <td>First-fit (Bin-Packing)</td>
+                        <td>O(n log n)</td>
+                        <td>O(n)</td>
+                        <td>Memory allocation in Dalvik/ART</td>
+                    </tr>
+                    <tr>
+                        <td>Binary Search Tree</td>
+                        <td>O(log n) avg</td>
+                        <td>O(n)</td>
+                        <td>Package management, settings storage</td>
+                    </tr>
+                    <tr>
+                        <td>Dijkstra's Algorithm</td>
+                        <td>O((V + E) log V)</td>
+                        <td>O(V^2)</td>
+                        <td>Network routing decisions</td>
+                    </tr>
+                    <tr>
+                        <td>A* Search Algorithm</td>
+                        <td>O(E)</td>
+                        <td>O(E)</td>
+                        <td>Pathfinding in system optimization</td>
+                    </tr>
+                    <tr>
+                        <td>Hash Tables</td>
+                        <td>O(1) avg</td>
+                        <td>O(n)</td>
+                        <td>Quick settings, intent resolution</td>
+                    </tr>
+                    <tr>
+                        <td>BFS and DFS</td>
+                        <td>O(V + E)</td>
+                        <td>O(V)</td>
+                        <td>Dependency resolution, task stacks</td>
+                    </tr>
+                    <tr>
+                        <td>Topological Sorting</td>
+                        <td>O(V + E)</td>
+                        <td>O(V)</td>
+                        <td>Boot sequence optimization</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <script>
+        // Scroll animation implementation
+        document.addEventListener('DOMContentLoaded', function () {
+            const animateElements = document.querySelectorAll('[data-animate]');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+
+        // Add a subtle parallax effect to the header
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            const scrollPosition = window.pageYOffset;
+            header.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+        });
+    </script>
+</body>
+
+</html>

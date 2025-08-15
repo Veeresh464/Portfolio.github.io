@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Scheduling in Operating Systems</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            margin: 0.4rem 0;
+        }
+
+        .figure-label {
+            font-style: italic;
+            color: #666;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        a.code-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a.code-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 3rem;
+            padding: 1rem;
+            background-color: #e9ecef;
+        }
+
+        .desc {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .btn-link {
+            background-color: #0077cc;
+            /* deep blue */
+            color: #fff;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 30px;
+        }
+
+        .btn-link:hover {
+            background-color: #005fa3;
+            /* slightly darker on hover */
+        }
+
+        .credits {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-top: 20px;
+        }
+
+        .credits a {
+            color: #4285F4;
+            text-decoration: none;
+        }
+
+        .credits a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        Job Scheduling in Operating Systems
+    </header>
+
+    <main>
+        <section>
+            <h2>Overview</h2>
+            <p>
+                Job scheduling involves managing the execution of multiple processes or tasks efficiently on a system’s
+                resources such as CPU time and memory. The primary goals are to optimize resource utilization, minimize
+                latency, and ensure fairness.
+            </p>
+        </section>
+
+        <section>
+            <h2>Khan's Algorithm</h2>
+            <div class="video-wrapper" style="text-align: center;">
+                <!-- Replace with your own video or YouTube embed -->
+                <video controls>
+                    <source src="./ResourceManagement/jobscheduling.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+                <div class="credits">
+                Credits: 
+                <a href="https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/"
+                    target="_blank">GFG</a>.
+            </div>
+            </div>
+            <p>
+                Topological Sort using Kahn's Algorithm processes a Directed Acyclic Graph (DAG) by repeatedly removing
+                nodes with zero in-degree. It uses a queue to track these nodes and appends them to the result list. For
+                every removed node, it reduces the in-degree of its neighbors. If the result list doesn't include all
+                nodes, a cycle exists in the graph. In the Android system it can be used for scheduling those processes
+                first which are not dependent on the other process for their execution. This algorithm also helps in the
+                determining whether the process can be abe to complete its task or not as by calculating the indegree of
+                that process.
+            </p>
+
+            <div class="video-wrapper" style="text-align: center;">
+                <!-- Replace with your own video or YouTube embed -->
+                <video controls>
+                    <source src="./ResourceManagement/topological.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <p>
+                The best example for that is the Androids Quick Share
+                Android handles dependencies through feature flags and service checks:
+            <ol>
+                <li>BluetoothManager: Checks and enables Bluetooth.</li>
+                <li>LocationManager: Determines if location services are on.</li>
+                <li>PackageManager: Verifies whether required permissions (like ACCESS_FINE_LOCATION, BLUETOOTH,
+                    NEARBY_SHARE) are granted.</li>
+                <li>Developers must manually check and orchestrate these conditions in the correct order.</li>
+            </ol>
+            </p>
+
+            <p><strong>Use-case:</strong>
+            <ul>
+                <li><strong> Startup task scheduling:</strong> Features like ActivityManager, PackageManager, and
+                    SystemUI must initialize in a strict dependency order.</li>
+                <li><strong>Service boot sequencing:</strong> Android schedules background services like
+                    BluetoothService, LocationManager, and Telephony based on dependency resolution.</li>
+                <li><strong>JobScheduler framework:</strong> When jobs have interdependencies (Job A must finish before
+                    Job B), a topological sort helps determine execution order.</li>
+            </ul>
+
+            </p>
+            <a href="https://leetcode.com/problems/course-schedule/submissions/1576034348/?envType=problem-list-v2&envId=2v2ysmjj"
+                class="code-link">Code: Topological Sort</a>
+        </section>
+
+        <section>
+            <h2>DeadLocks and its Handling: </h2>
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/deadlock.png" alt="Round Robin" width="500px">
+            </p>
+
+            <ul>
+                <li>
+                    A deadlock is a situation where a set of processes is blocked because each process is holding a
+                    resource and waiting for another resource acquired by some other process. In this article, we will
+                    discuss deadlock, its necessary conditions, etc. in detail. The Mutual Exclusion, Hold and Wait, No
+                    Preemption, Circular Wait any one of them in the operating system can cause the deadlock.
+                </li>
+            </ul>
+
+
+            <h4>Deadlock Detection using Resource Allocation Graph: </h4>
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/combined (1).jpg" alt="Round Robin" width="500px">
+            </p>
+            <div class="credits">
+                Credits: 
+                <a href="https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/"
+                    target="_blank">GFG</a>.
+            </div>
+
+            <p>
+                In the above image shown the left has no deadlocks in its processes and resource allocation but the
+                right one does have an deadlock in its resource allocation processes.
+            </p>
+
+            <h4>Deadlock Detection and Avoidance using Banker's Algorithm: </h4>
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/bankersAlgo.jpeg" alt="Round Robin" width="500px">
+            </p>
+            
+
+            <a href="https://www.geeksforgeeks.org/bankers-algorithm-in-operating-system-2/" class="code-link">More Details:
+                Bankers Algorithm</a>
+        </section>
+
+        <section>
+            <h2>References: </h2>
+            <p>
+            <ul>
+                <li>https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/</li>
+                <li>https://yuminlee2.medium.com/topological-sort-cf9f8e43af6a</li>
+                <li>https://see-algorithms.com/graph/TopSort</li>
+            </ul>
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        Back to <a href="/" style="color:#2c3e50; font-weight: bold;">Home</a> | Portfolio maintained by Veeresh S
+        Hiremath.<br />
+        This page was generated using GitHub Pages.
+    </footer>
+
+
+</body>
+
+</html>

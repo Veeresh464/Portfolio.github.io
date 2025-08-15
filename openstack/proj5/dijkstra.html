@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SJF Load Balancing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        header {
+            background-color: #2d2d2d;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid #0ea5e9;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            color: #0ea5e9;
+            border-left: 5px solid #0ea5e9;
+            padding-left: 10px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        .code-link {
+            display: inline-block;
+            background-color: #0ea5e9;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .code-link:hover {
+            background-color: #0284c7;
+        }
+
+        .algorithm-advantages {
+            background: rgba(0, 0, 0, 0.03);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .component-subtitle {
+            font-size: 1.2rem;
+            color: #0ea5e9;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2d2d2d;
+            color: #ccc;
+        }
+
+        .video-player {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Dijkstra’s Algorithm</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Description</h2>
+            <p>
+                Dijkstra’s algorithm is the shortest path algorithm used to find the most efficient route between nodes
+                in a graph. In OpenStack networking, the graph can represent a virtual network topology consisting of
+                routers, switches, virtual machines (VMs), and subnets. Nodes represent network components, and edges
+                represent links with associated weights (typically based on latency, bandwidth, or hop count).
+            </p>
+
+            <p>
+                OpenStack uses components like Neutron to manage networking. In dynamic SDN (Software Defined
+                Networking) environments built atop OpenStack, Dijkstra’s algorithm helps controllers like OpenDaylight
+                or ONOS to determine the shortest or least-cost path for routing packets between VMs, especially in
+                complex tenant networks.
+            </p>
+        </section>
+
+        <section>
+            <h2>Dijkstra’s Algorithm in Action</h2>
+            <p>This video demonstrates how Dijkstra's algorithm determines optimal routing paths in an OpenStack cloud
+                network.</p>
+
+            <video controls class="video-player">
+                <source src="./Dijkstra_Algorithm/Screen Recording 2025-05-31 162320.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </section>
+
+
+        <section>
+            <h2>Key Features</h2>
+            <ul>
+                <li><strong>Efficiency:</strong> Quickly computes the shortest path for routing across virtual networks.
+                </li>
+                <li><strong>Scalability:</strong> Performs well even as the number of VMs and networks scales up.</li>
+                <li><strong>Resilience:</strong> Adapts to changes in topology or link metrics to maintain performance.
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Use Case</h2>
+            <p>OpenStack networks can integrate with dynamic routing protocols like OSPF, which uses Dijkstra’s Shortest
+                Path First (SPF) algorithm. This allows the system to:
+            <ul>
+                <li>Dynamically calculate shortest and most efficient paths between VMs.</li>
+                <li>Adapt quickly to changes in the network topology (e.g., link or node failures).</li>
+                <li>Optimize bandwidth usage by preferring high-bandwidth links.</li>
+            </ul>
+
+            </p>
+        </section>
+
+
+        <section>
+            <h2>Implementation</h2>
+            <p>
+                Here is the Java implementation of the Least Connections Load Balancing algorithm.
+                This implementation reads metrics from a CSV file and distributes incoming requests
+                to instances based on the number of active connections.
+            </p>
+            <a class="code-link" href="./Dijkstra_Algorithm/Dijk.java">Implimentation Using User Defined Data
+                structures</a>
+
+            <a class="code-link" href="./Dijkstra_Algorithm/Dijk2.java">Implimentation Using Collection framework</a>
+        </section>
+
+        <section>
+            <h2>References</h2>
+            <ul>
+                <li> <strong>Medium:</strong> https://medium.com/swlh/pathfinding-dijkstras-algorithm-65e71c346629</li>
+                <li><strong>GFG: </strong> https://www.geeksforgeeks.org/introduction-to-dijkstras-shortest-path-algorithm/</li>
+
+            </ul>
+        </section>
+
+    </main>
+
+    <footer>
+        &copy; 2025 Load Balancer Suite | Efficient Resource Distribution Engine
+    </footer>
+</body>
+
+</html>

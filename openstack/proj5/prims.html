@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bellman-Ford Algorithm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        header {
+            background-color: #2d2d2d;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid #0ea5e9;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            color: #0ea5e9;
+            border-left: 5px solid #0ea5e9;
+            padding-left: 10px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        .code-link {
+            display: inline-block;
+            background-color: #0ea5e9;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .code-link:hover {
+            background-color: #0284c7;
+        }
+
+        .algorithm-advantages {
+            background: rgba(0, 0, 0, 0.03);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .component-subtitle {
+            font-size: 1.2rem;
+            color: #0ea5e9;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2d2d2d;
+            color: #ccc;
+        }
+        .video-player {
+            width: 70%;
+            max-width: 800px;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Bellman-Ford Algorithm</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Description</h2>
+            <p>
+                Prim’s algorithm is a well-known algorithm used for finding the minimum spanning tree in a weighted undirected graph. It is named after its inventor, Jarník and Prim, who independently developed it in 1930. Prim’s algorithm is a greedy algorithm that starts with a single vertex and adds one edge at a time to form a tree. This means it finds a subset of the edges that forms a tree that includes every vertex, where the total weight of all the edges in the tree is minimized. The process continues until all vertices are connected, and a minimum spanning tree is formed.
+            </p>
+            <p>
+                To implement Prim’s algorithm, the following steps are necessary: 
+                <ul>
+                    <li>Initialize the minimum spanning tree with a single vertex selected at random from the graph.</li>
+                    <li>Find all edges that connect the tree to vertices that are not yet in the tree.</li>
+                    <li>Select the edge with the smallest weight from the set of edges found in step 2 and add it to the minimum spanning tree.</li>
+                    <li>Add the new vertex that is connected to the selected edge to the minimum spanning tree.</li>
+                    <li>Repeat steps 2–4 until all vertices are part of the minimum spanning tree.</li>
+                </ul>
+            </p>
+        </section>
+
+        <img src="./prims.jpeg" alt="Bellman-Ford Algorithm Diagram" 
+     style="display: block; margin: 20px auto; max-width: 100%; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.2);">
+
+
+     <video controls class="video-player">
+                <source src="./primsalgo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+
+        <section>
+            <h2>Key Features</h2>
+            <ul>
+                <li><strong>Minimum Total Cost Spanning:</strong> Prim’s algorithm ensures that all nodes (e.g., VMs, routers) in a network are connected with the minimum total cost (e.g., latency, bandwidth usage).</li>
+                <li><strong>Edge-by-Edge Growth:</strong> Starts with a single node and greedily adds the next minimum edge that connects a new node to the growing tree.</li>
+                <li><strong>Supports Dense Graphs Efficiently:</strong> Particularly effective in dense graphs (like full-mesh tenant overlays) where many VMs are interconnected.</li>
+                <li> <strong>Time complexity:</strong>	O(E log V)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Use Case</h2>
+            <p>
+                In multicast or broadcast communication, sending messages to multiple VMs or tenants without redundancy is essential. OpenStack (via Neutron or SDN controllers) needs to minimize total network cost (latency, bandwidth, or hops).
+            </p>
+            <p>
+                OpenStack virtual networks form a graph with switches, routers, VMs, and links with weights (delay, bandwidth). Unlike Dijkstra (which finds shortest path from a single source), Prim’s algorithm builds a cost-efficient routing backbone (MST) that can connect multiple components with minimum overhead.
+            </p>
+            <p>
+                A set of users (or front-end gateways) need to be connected to a distributed set of VMs or compute nodes. You model this as a graph with weighted edges (cost of assigning a user to a VM: based on latency, load, or location).
+            </p>
+        </section>
+
+        
+
+        <section>
+            <h2>Implementation</h2>
+            <p>
+                Below is the implimentation of leetcode solution for Min Cost to Connect All Points (Leetcode 1584).
+            </p>
+            <a class="code-link" href="https://leetcode.com/problems/min-cost-to-connect-all-points/submissions/1594755671/?envType=problem-list-v2&envId=2v2ysmjj">Bellman-Ford Implementation in Java</a>
+        </section>
+
+        <section>
+            <h2>References</h2>
+            <ul>
+                <li><strong>GeeksForGeeks:</strong> https://www.geeksforgeeks.org/bellman-ford-algorithm-dp-23/</li>
+                <li><strong>Wikipedia:</strong> https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2025 Load Balancer Suite | Efficient Resource Distribution Engine
+    </footer>
+</body>
+
+</html>

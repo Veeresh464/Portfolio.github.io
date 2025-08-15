@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ford-Fulkerson in Android Network Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #0f172a;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+        }
+
+        h2 {
+            color: #1e293b;
+            margin-top: 0;
+        }
+
+        .description {
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #0f172a;
+        }
+
+        .description {
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #cbd5e1;
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f1f5f9;
+        }
+
+        .btn-link {
+            background-color: #0077cc;
+            /* deep blue */
+            color: #fff;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 30px;
+        }
+
+        .btn-link:hover {
+            background-color: #005fa3;
+            /* slightly darker on hover */
+        }
+
+        .credits {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-top: 20px;
+        }
+
+        .credits a {
+            color: #4285F4;
+            text-decoration: none;
+        }
+
+        .credits a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Android Network Management</h1>
+    </header>
+
+    <div class="container">
+        <h2>Ford-Fulkerson</h2>
+        <p class="description">
+            The Ford Fulkerson method, also known as ‘augmenting path algorithm’ is an effective approach to solve the
+            maximum flow problem. The Ford Fulkerson method depends on two main concepts and they are, Residual Network
+            and Augmenting paths.
+        </p>
+        <img src="./ResourceManagement/fordfulkerson.png" alt="Ford-Fulkerson Flowchart Diagram">
+        <div class="credits">
+                Credits: 
+                <a href="https://medium.com/@jithmisha/solving-the-maximum-flow-problem-with-ford-fulkerson-method-3fccc2883dc7"
+                    target="_blank">Jithmi Shashirangana</a>.
+            </div>
+        <p>
+            The phone's network interface (Wi-Fi or mobile data) as a water tank with limited outflow capacity. Every
+            app is a pipe trying to get water. Some apps need more (YouTube), some less (WhatsApp messages), and others
+            shouldn't get any at all background app updates Ford-Fulkerson's principle, Android must distribute this
+            limited flow data bandwidth efficiently. The system has to prioritize based on importance user usage,
+            foreground vs. background. It limits or blocks apps with lower priority by cutting off their "flow path".
+        </p>
+
+        <p>
+            Android models apps/services as nodes in a network flow graph. Assigns bandwidth limits as edge capacities.
+            Uses flow control (conceptually similar to Ford-Fulkerson) to Allow full flow to critical paths e.g.,
+            YouTube in foreground. Reduce or stop flow to others (e.g., Google Photos backup in background). Ensures
+            maximum useful data throughput within user-imposed constraints (like mobile data cap).
+        </p>
+
+
+        <div class="container">
+            <h3>Complexity Comparison</h3>
+            <p class="description">
+                The Ford–Fulkerson algorithm finds the maximum flow in a flow network. When capacities are integers, the
+                time complexity depends on the number of edges and the maximum flow value. Below is a comparison between
+                Ford-Fulkerson and its improved version, Edmonds–Karp.
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Time Complexity</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ford–Fulkerson</td>
+                        <td>O(E × f)</td>
+                        <td>Where E = number of edges, f = max flow value. May not terminate for irrational capacities.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="text-align: center; margin-top: 30px;">
+            <a class="btn-link"
+                href="https://medium.com/@jithmisha/solving-the-maximum-flow-problem-with-ford-fulkerson-method-3fccc2883dc7"
+                target="_blank">
+                📘 Read About Ford Fulkerson on Medium
+            </a>
+            <a class="btn-link" href="./code/FordFulkerson.java" target="_blank">
+                📘 Code: Ford Fulkerson
+            </a>
+        </div>
+
+
+
+        <div class="container">
+            <h2>Exponential Backoff Algorithm: </h2>
+            <p class="description">
+                Exponential Backoff is a network congestion control algorithm that progressively increases the wait time
+                between retries after a failure (like a collision or no acknowledgment). It is most famously used in
+                Ethernet (CSMA/CD) and wireless protocols (WiFi, Bluetooth, LTE).
+            </p>
+            <div class="gif-section" style="text-align:center; margin-top: 20px;">
+                <img src="./ResourceManagement/1_wLYCORwkAMAA3xWjC3IXDQ.gif" alt="Exponential Backoff Animation"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                <div class="credits">
+                    Credits:
+                    <a href="https://medium.com/@roopa.kushtagi/decoding-exponential-backoff-a-blueprint-for-robust-communication-de21459aa98f"
+                        target="_blank">Roopa Kushtagi</a>.
+                </div>
+                <p style="color: #555; margin-top: 10px;">Exponential Backoff in action: delay increases after each
+                    failed attempt</p>
+            </div>
+            <p>
+                When the device fails to transmit due to collision or no ACK it waits for the random amount of time
+                before retrying, if it fails again then, it doubles the maximum wait time window and picks another
+                random value within it. And this continues up to the maximum retry limit. This algorithm can also be
+                applied for the processes that are running on Android and can be used for the deadlock prevention in if
+                we know well in advance the process and its maximum resource needs.
+            </p>
+            <p>
+                Backoff Time = random(0, 2ⁿ - 1) × SlotTime
+                Where n is the number of retries (usually capped), and SlotTime is a fixed unit of delay.
+            </p>
+
+            <p>
+            <h3>Use Cases</h3>
+            <ul>
+                <li>Wi-Fi Retry Logic</li>
+                <li>Bluetooth Communication</li>
+                <li>Mobile Data (LTE/5G)</li>
+                <li>Improves network performance</li>
+            </ul>
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Backoff Range</th>
+                        <th>Time Complexity</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>n-th Retry</td>
+                        <td>0 to 2ⁿ − 1</td>
+                        <td>O(2ⁿ)</td>
+                        <td>Each retry doubles the max wait slots. Prevents network congestion.</td>
+                    </tr>
+                    <tr>
+                        <td>Worst Case (Max Retries)</td>
+                        <td>0 to 2^k − 1</td>
+                        <td>O(2ᵏ)</td>
+                        <td>k is the retry limit. Exponential delay prevents retry storms.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="text-align: center; margin-top: 30px;">
+                <a class="btn-link"
+                    href="https://medium.com/@roopa.kushtagi/decoding-exponential-backoff-a-blueprint-for-robust-communication-de21459aa98f"
+                    target="_blank">
+                    📘 Read About Exponential Back-Off on Medium
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 Android Network Optimization | Ford-Fulkerson Algorithm
+    </div>
+</body>
+
+</html>

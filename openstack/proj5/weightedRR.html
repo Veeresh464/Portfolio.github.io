@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weighted Round Robin Load Balancing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: #1f2937;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+
+        header {
+            border-left: 6px solid #e11d48;
+            padding-left: 16px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #e11d48;
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #e11d48;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        .code-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #e11d48;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            height: 100%;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: skewX(-20deg);
+            transition: left 0.4s ease;
+        }
+
+        .code-link:hover::before {
+            left: 120%;
+        }
+
+        .code-link:hover {
+            background-color: #be123c;
+            transform: translateY(-2px);
+        }
+
+        code {
+            background-color: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+        }
+
+        .gif-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .demo-gif {
+            max-width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .demo-gif:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Weighted Round Robin Load Balancing</h1>
+        </header>
+
+        <section class="description">
+            <h2>Description</h2>
+            <p>
+                Weighted Round Robin Load Balancing is an extension of the Round Robin algorithm that takes into account
+                different weights assigned to each instance.
+                These weights represent the capacity or capability of each instance to handle requests. Requests are
+                distributed to instances based on their weights in a circular order,
+                ensuring that instances with higher weights receive more requests compared to those with lower weights.
+            </p>
+        </section>
+
+        <section class="gif-section">
+            <img src="./weightedRRgif.gif" alt="Load Balancing GIF" class="demo-gif" />
+        </section>
+
+
+        <section class="features">
+            <h2>Key Features</h2>
+            <ul>
+                <li><strong>Dynamic Weight Adjustment:</strong> Allows administrators to assign higher weights to more
+                    powerful instances and lower weights to less powerful ones.</li>
+                <li><strong>Flexible Load Distribution:</strong> Distributes load based on weights, accommodating
+                    varying instance capabilities.</li>
+                <li><strong>Enhanced Performance:</strong> Optimizes system performance by directing more requests to
+                    higher-capacity instances.</li>
+            </ul>
+        </section>
+
+        <section class="use-case">
+            <h2>Use Case</h2>
+            <p>
+                Weighted Round Robin Load Balancing is suitable for environments where instances have different
+                capacities, such as cloud computing platforms with varying VM sizes.
+                It ensures efficient resource allocation and supports scaling based on workload demands.
+            </p>
+        </section>
+
+        <section class="implementation">
+            <h2>Implementation</h2>
+            <p>
+                Here is the Java implementation of the Weighted Round Robin Load Balancing algorithm. This
+                implementation reads metrics from a CSV file and distributes incoming requests to instances based on
+                their assigned weights.
+            </p>
+        </section>
+
+        <section class="code-link-section">
+            <a href="./WeightedRoundRobinSimulator.java" class="code-link">Click here to view the code</a>
+        </section>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File and Recent Search Storage</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #003366;
+            margin-top: 0;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .code-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #0056b3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .code-link:hover {
+            text-decoration: underline;
+        }
+
+        .algo-type {
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 3rem;
+            padding: 1rem;
+            background-color: #e9ecef;
+        }
+
+        .figure-label {
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card h2 {
+            color: #003366;
+            margin-bottom: 0.5rem;
+            font-size: medium;
+        }
+
+        .card p {
+            margin: 0.4rem 0;
+            line-height: 1.6;
+        }
+
+        .card .label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        table {
+            width: 70%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        caption {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .complexity-section {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .complexity-section h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: #ffffff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f4f8;
+        }
+
+        .btn-link {
+            background-color: #0077cc;
+            /* deep blue */
+            color: #fff;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 30px;
+        }
+
+        .btn-link:hover {
+            background-color: #005fa3;
+            /* slightly darker on hover */
+        }
+
+
+
+        @media (max-width: 600px) {
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        File and Recent Search Storage
+    </header>
+
+    <main>
+        <section>
+            <h2>Overview</h2>
+            <p>
+                In Android, your phone keeps track of two important things to help you use it more easily: the files you
+                save and the searches you recently made. File storage is where your apps and media (like photos,
+                downloads, or documents) are kept so you can open or share them later. Recent search storage, on the
+                other hand, remembers the keywords or phrases you typed into search bars like in Google, YouTube, or
+                Settings to help you find things faster next time. This way, your phone feels more personal and
+                responsive, like it remembers what’s important to you. Android manages this data smartly and stores it
+                either in memory, databases, or shared preferences to make sure it’s ready when you need it without
+                slowing down your phone.
+            </p>
+        </section>
+
+        <section>
+            <h2>Trie Data Structure</h2>
+            <p>
+            <ul>
+                <li>A Trie is a special tree-like data structure used to store words, especially
+                    useful for searching words quickly.</li>
+                <li>In simple terms, each letter of a word is stored as a step in the path of the tree. So, words that
+                    start the same way share the same starting path.</li>
+                <li>It is commonly used in features like autocomplete or spell-check in phones and apps, where the
+                    system quickly finds matching words from a list.</li>
+            </ul>
+            </p>
+
+
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/Trie.jpeg" alt="Trie" width="500px">
+            </p>
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/logicalView.png" alt="Trie Logical" height="300px">
+            </p>
+            <p>
+                In these images the first is the real view of how the tries is implimented and the second images shows
+                the logical view of the Tries which is easier to understand.
+            </p>
+
+            <section id="trie-visualizer" style="padding: 40px 20px; background-color: #f0f4f8;">
+                <div style="max-width: 1000px; margin: auto;">
+                    <h2 style="text-align: center; color: #2c3e50;">Play to Learn</h2>
+
+                    <iframe src="https://gallery.selfboot.cn/en/algorithms/trie"
+                        style="width: 100%; height: 600px; border: 2px solid #ccc; border-radius: 10px;"
+                        title="Trie Visualizer">
+                    </iframe>
+
+                    <p style="text-align: center; font-size: 14px; margin-top: 10px;">
+                        Credits: <a href="https://github.com/selfboot/ai_gallery" target="_blank"
+                            style="color: #2980b9;">AI Gallery by Selfboot</a>
+                    </p>
+                </div>
+            </section>
+
+             <p style="text-align: center;">
+                <img src="./ResourceManagement/complexityTrie.png" alt="Trie" width="700px">
+            </p>
+
+            <div style="text-align: center;">
+                <a class="btn-link"
+                href="https://www.geeksforgeeks.org/introduction-to-trie-data-structure-and-algorithm-tutorials/"
+                target="_blank">
+                📘 Read About B-Trees on GFG
+            </a>
+            <a class="btn-link"
+                href="./code/Trie.cpp"
+                target="_blank">
+                📘 Code: Trie Implimentation
+            </a>
+            </div>
+
+
+        </section>
+
+        <section>
+            <h2>B Trees</h2>
+            <div style="text-align: center;">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/K1a2Bk8NrYQ?si=3DQ_Knoc92Nfa4_v"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <p style="text-align: center; font-size: 14px; margin-top: 10px;">
+                Credits: <a href="https://youtu.be/K1a2Bk8NrYQ?si=HcB8fnhTnH_4VFse" target="_blank"
+                    style="color: #2980b9;">Spanning Tree YouTube</a>
+            </p>
+
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/propertyBTree.png" alt="Trie" width="100%">
+            </p>
+
+
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/needBTree.png" alt="Trie" width="100%">
+            </p>
+
+            <div class="complexity-section">
+                <h2>B-Tree Time & Space Complexity</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>Time Complexity</th>
+                            <th>Space Complexity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Search</td>
+                            <td>O(log<sub>m</sub> n)</td>
+                            <td>O(n)</td>
+                        </tr>
+                        <tr>
+                            <td>Insertion</td>
+                            <td>O(log<sub>m</sub> n)</td>
+                            <td>O(n)</td>
+                        </tr>
+                        <tr>
+                            <td>Deletion</td>
+                            <td>O(log<sub>m</sub> n)</td>
+                            <td>O(n)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <div style="text-align: center;">
+                <a class="btn-link"
+                href="https://medium.com/@nomannayeem/the-power-of-b-trees-optimizing-data-storage-and-retrieval-a20f0fa05846"
+                target="_blank">
+                📘 Read About B-Trees on Medium
+            </a>
+            <a class="btn-link"
+                href="./code/BTree.java"
+                target="_blank">
+                📘 Read About B-Trees on Medium
+            </a>
+            </div>
+
+        </section>
+
+        <section>
+            <h2>References: </h2>
+            <p>
+            <ul>
+                <li>https://medium.com/@udarachinthaka135/jump-search-algorithm-488c0f6e293d</li>
+                <li>https://medium.com/@arartawil_96289/searching-algorithm-jump-search-9b1d9c3f4955</li>
+                <li>https://www.geeksforgeeks.org/b-tree-in-java/</li>
+            </ul>
+            </p>
+        </section>
+    </main>
+</body>
+
+</html>

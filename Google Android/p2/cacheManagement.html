@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resource Management in OS</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #003366;
+            margin-top: 0;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .code-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #0056b3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .code-link:hover {
+            text-decoration: underline;
+        }
+
+        .algo-type {
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 3rem;
+            padding: 1rem;
+            background-color: #e9ecef;
+        }
+
+        .figure-label {
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card h2 {
+            color: #003366;
+            margin-bottom: 0.5rem;
+            font-size: medium;
+        }
+
+        .card p {
+            margin: 0.4rem 0;
+            line-height: 1.6;
+        }
+
+        .card .label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        table {
+            width: 70%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        caption {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+
+        @media (max-width: 600px) {
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        Cache Replacement Algorithm
+    </header>
+
+    <main>
+        <section>
+            <h2>Overview</h2>
+            <p>
+                Cache replacement algorithms decide which data to evict when the cache of the mobile device is full.
+                Common algorithms include LRU, Buddy Memory Allocation Algorithm, Greedy Dual size Frequency Cache
+                replacement algorithm each using different strategies based on usage history. The main goal here is to
+                maximize hit rate and optimize performance with limited memory.
+            </p>
+        </section>
+
+        <section>
+            <h2>LRU Cache Algorithm: </h2>
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/LRU.png" alt="Red-Black" width="500px">
+            </p>
+            <p>
+                LRU cache can be implimented by the doubly linked list for storing the least recently used data and
+                combined with the Linked Hash map which helps in the fast access of the list nodes by the storing the
+                address of the nodes in the key value pairs of the map.
+            </p>
+
+            <div class="card">
+                <table>
+                    <caption>Why LRU is Preferred in Cache Systems</caption>
+                    <thead>
+                        <tr>
+                            <th>Advantage</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Improves Hit Rate</td>
+                            <td>By evicting the least recently used item, LRU keeps frequently accessed data in the
+                                cache.</td>
+                        </tr>
+                        <tr>
+                            <td>Easy to Implement</td>
+                            <td>Can be efficiently implemented using data structures like HashMap + Doubly Linked List.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Realistic Access Pattern</td>
+                            <td>Mimics real-world usage where recently used data is more likely to be used again soon.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                <strong>Time Complexity: </strong> O(1) for both get() and put() operations using HashMap + Doubly
+                Linked List.<br>
+                <strong>Space Complexity: </strong> O(capacity), where capacity is the maximum number of items the cache
+                can hold.
+            </p>
+            <a href="./code/LRUcache.java" class="code-link">Code: LRU cache Code</a>
+        </section>
+
+        <section>
+            <h2>Buddy System Memory Allocation Algorithm: </h2>
+            <p>
+                Buddy System is a memory allocation technique used in computer OS to allocate and manage memory
+                efficiently. This technique by dividing the memory into fixed-size blocks, and whenever a process
+                requests memory, the system finds the smallest available block that can accommodate the requested memory
+                size.
+
+                It splits memory blocks, called “buddies,” to minimize fragmentation and ensure efficient allocation.
+                When a process is deallocated, its buddy can be merged back into a larger block, reducing wasted space.
+            <p style="text-align: center;">
+                <img src="./ResourceManagement/buddy.png" alt="Red-Black" width="500px">
+            </p>
+
+            <ul>
+                <li><strong>Splitting: </strong>If a block is too large, it's divided into two equal "buddy" blocks.
+                </li>
+                <li><strong>Merging: </strong>When both buddies are free, they are merged back into a larger block to
+                    reduce fragmentation.</li>
+            </ul>
+
+            <strong>Flaws :</strong>
+            <p>
+                Despite these benefits, it suffers from internal fragmentation, as memory allocations like 66 KB may require a full 128 KB block, wasting space. This issue is often addressed with slab allocation, layered on top of the buddy system for finer control.
+            </p>
+            </p>
+
+            <a href="https://en.wikipedia.org/wiki/Buddy_memory_allocation">More Details</a>
+        </section>
+
+        <section>
+            <h2>Greedy Dual Size Frequency Cache Replacement Algorithm</h2>
+            <p>
+                The Greedy-Dual-Size-Frequency (GDSF) algorithm is an advanced cache replacement policy designed to improve caching efficiency by considering multiple factors like the cost of fetching, object size, and access frequency. It is some what like the algorithm that uses the past heuristics data for the future predictions and the decision making of the algorithm.
+            </p>
+
+
+            <p style="text-align: center; justify-content: center;">
+            <img src="./ResourceManagement/greedy_cache_replacement.png" alt="Red-Black" width="300px">
+
+
+             <section>
+            <h2>Key Concepts of GDSF</h2>
+            <ul>
+                <li><strong>Cost (H):</strong> The latency or cost to fetch the object.</li>
+                <li><strong>Size (S):</strong> Size of the object.</li>
+                <li><strong>Frequency (F):</strong> Number of accesses.</li>
+                <li><strong>Priority (P):</strong> Used for eviction decisions.</li>
+            </ul>
+            <div class="formula">
+                Priority: P = H + (F / S)
+            </div>
+        </section>
+
+        <section>
+            <h2>Advantages</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Benefit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cost-awareness</td>
+                        <td>Optimizes for expensive-to-fetch objects</td>
+                    </tr>
+                    <tr>
+                        <td>Size-awareness</td>
+                        <td>Prevents large objects from dominating cache</td>
+                    </tr>
+                    <tr>
+                        <td>Frequency-awareness</td>
+                        <td>Boosts frequently accessed objects</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Applications</h2>
+            <ul>
+                <li>Web caching in browsers</li>
+                <li>Resource caching in Android systems</li>
+            </ul>
+        </section>
+
+        <a href="https://ieeexplore.ieee.org/document/8258989">More Details</a>
+
+
+        </section>
+
+
+        <section>
+            <h2>References: </h2>
+            <p>
+            <ul>
+                <li>https://medium.com/swlh/exploring-the-bin-packing-problem-f54a93ebdbe5</li>
+                <li>https://medium.com/@tech_future/bin-packing-nfd-algorithm-custom-more-reliable-algorithm-alternative-cebbe7c27ede
+                </li>
+                <li>https://ieeexplore.ieee.org/document/8258989</li>
+            </ul>
+            </p>
+        </section>
+    </main>
+
+
+    <footer>
+        Back to <a href="/" style="color:#003366; font-weight: bold;">Home</a> | Portfolio maintained by Veeresh S
+        Hiremath.<br />
+        This page was generated using GitHub Pages.
+    </footer>
+</body>
+
+</html>

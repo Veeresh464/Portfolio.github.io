@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Music System Design & Algorithms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #282828 50%, #0f0f0f 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(90deg, #ff0000 0%, #cc0000 100%);
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .section:nth-child(even) {
+            background: rgba(40, 40, 40, 0.3);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #ff0000;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff0000, #ffffff);
+            border-radius: 2px;
+        }
+
+        /* Introduction Section */
+        .intro-content {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(40, 40, 40, 0.8) 100%);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .intro-content:hover {
+            transform: translateY(-5px);
+        }
+
+        .intro-content p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        /* Architecture Overview */
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .arch-card {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.15) 0%, rgba(40, 40, 40, 0.9) 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .arch-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .arch-card:hover::before {
+            left: 100%;
+        }
+
+        .arch-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 0, 0, 0.2);
+        }
+
+        .arch-card h3 {
+            color: #ff0000;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .arch-card ul {
+            list-style: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .arch-card li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .arch-card li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #ff0000;
+        }
+
+        /* Algorithm Table */
+        .algo-table-container {
+            background: rgba(40, 40, 40, 0.5);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+            overflow-x: auto;
+        }
+
+        .algo-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(15, 15, 15, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .algo-table th {
+            background: linear-gradient(90deg, #ff0000, #cc0000);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .algo-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .algo-table tr:hover td {
+            background: rgba(255, 0, 0, 0.1);
+        }
+
+        /* Component Sections */
+        .component {
+            margin: 60px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.05) 0%, rgba(40, 40, 40, 0.8) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .component::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .component:hover::before {
+            opacity: 1;
+        }
+
+        .component-title {
+            font-size: 2rem;
+            color: #ff0000;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .component-subtitle {
+            font-size: 1.3rem;
+            color: #ffffff;
+            margin: 20px 0 15px 0;
+            font-weight: 600;
+        }
+
+        .algorithm-details {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff0000;
+        }
+
+        .complexity-info {
+            background: linear-gradient(90deg, rgba(255, 0, 0, 0.1), rgba(40, 40, 40, 0.8));
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .benefit-item {
+            background: rgba(255, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #ff0000;
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            transform: translateX(10px);
+        }
+
+        /* Operations Table */
+        .operations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .operations-table th {
+            background: linear-gradient(90deg, #ff0000, #cc0000);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .operations-table td {
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Courier New', monospace;
+        }
+
+        .operations-table tr:nth-child(even) td {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Link Styles */
+        .github-link {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff0000, #cc0000);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .github-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .component-title {
+                font-size: 1.5rem;
+            }
+
+            .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ff0000, #cc0000);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #cc0000, #aa0000);
+        }
+
+
+
+        .architecture-image-container {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.05), rgba(40, 40, 40, 0.8));
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+
+        .architecture-image-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .architecture-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1>YouTube Music System Design</h1>
+            <p>Exploring Algorithms & Data Structures in Music Streaming</p>
+        </div>
+    </header>
+
+    <!-- Introduction Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Introduction</h2>
+            <div class="intro-content">
+                <p>YouTube Music is a music streaming service developed by Google that offers access to a vast library
+                    of songs, albums, playlists, remixes, live performances, and user-generated content such as covers,
+                    all sourced from YouTube's extensive platform. As a software developer with a passion for music and
+                    technology, I've chosen YouTube Music for its influential role in music streaming and its robust
+                    platform for algorithmic development. It not only enriches the listening experience but also
+                    provides an ideal environment to apply cutting-edge algorithms and data structures.</p>
+
+                <p>Key objectives include exploring and determining the efficient solutions for music recommendation,
+                    playlist generation, data analysis, and user management. Each section showcases the application of
+                    theoretical concepts in practical settings, emphasizing innovation and optimization within YouTube
+                    Music's dynamic platform.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Overview -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Architecture Overview</h2>
+
+            <section class="section">
+                <div class="container">
+                    <div class="architecture-image-container">
+                        <img src="./baseArch.webp" alt="System Architecture Diagram" class="architecture-image">
+                    </div>
+                </div>
+            </section>
+            <p style="text-align: center; font-size: 1.1rem; margin-bottom: 40px;">YouTube Music is built on top of
+                Google's cloud-scale infrastructure and shares many core components with YouTube:</p>
+
+            <div class="architecture-grid">
+                <div class="arch-card">
+                    <h3>Frontend</h3>
+                    <ul>
+                        <li>Cross-platform interfaces (Android, iOS, Web)</li>
+                        <li>Built using React/Flutter-like frameworks</li>
+                        <li>REST API for data communication</li>
+                    </ul>
+                </div>
+
+                <div class="arch-card">
+                    <h3>Backend Services</h3>
+                    <ul>
+                        <li>Microservices architecture</li>
+                        <li>Running in Google Kubernetes Engine (GKE)</li>
+                        <li>Scalable and distributed processing</li>
+                    </ul>
+                </div>
+
+                <div class="arch-card">
+                    <h3>Memory Optimization</h3>
+                    <ul>
+                        <li>LRU (Least Recently Used) cache eviction</li>
+                        <li>Protocol Buffers for efficient serialization</li>
+                        <li>Optimized data transfer between services</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="algo-table-container">
+                <h3 style="color: #ff0000; text-align: center; margin-bottom: 20px; font-size: 1.5rem;">Core Data
+                    Structures</h3>
+                <table class="algo-table">
+                    <thead>
+                        <tr>
+                            <th>Data Structure</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Hash Tables</strong></td>
+                            <td>Quick access to cached metadata and user session info</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Graphs</strong></td>
+                            <td>Model user-item interaction, content similarity, co-listening patterns</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tries / Prefix Trees</strong></td>
+                            <td>Autocomplete and search suggestions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Heaps</strong></td>
+                            <td>Priority queues for top-N recommendation systems</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bloom Filters</strong></td>
+                            <td>Efficiently test content existence in large-scale systems</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Inverted Indexes</strong></td>
+                            <td>Fast search and retrieval across millions of songs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Music Recommendation System -->
+    <section class="section">
+        <div class="container">
+            <div class="component">
+                <h2 class="component-title">1. Music Recommendation System</h2>
+
+                <p style="font-size: 1.1rem; margin-bottom: 25px;">YouTube Music uses a smart method called
+                    <strong>Personalized PageRank</strong> to recommend songs and videos you might like. It works by
+                    building a network (or graph) where each song or video is a point (called a node), and connections
+                    between them (like if two songs are often played one after another) are the lines (called edges).
+                    The system then simulates how a user might explore music, randomly jumping from song to song, but
+                    often restarting from something the user recently listened to.
+                </p>
+
+                <div class="algorithm-details">
+                    <h3 class="component-subtitle">Algorithm: Personalized PageRank</h3>
+                    <p><strong>Data Structure:</strong> Co-visitation Graph (songs as nodes, co-listens as edges)</p>
+                    <p><strong>Data Structure Type:</strong> Graph (songs/videos as nodes, user co-visitation as edges)
+                    </p>
+
+                    <div class="complexity-info">
+                        <strong>Time Complexity:</strong> O(V + E) per iteration, where V is the number of content nodes
+                        and E is the number of co-visitation edges
+                    </div>
+                </div>
+
+                <section class="section">
+                    <div class="container">
+                        <div class="architecture-image-container">
+                            <img src="./Screenshot 2025-05-29 120144.png" alt="Personalized Page ranking"
+                                class="architecture-image">
+                        </div>
+                    </div>
+                </section>
+
+                <h3 class="component-subtitle">Functionality</h3>
+                <p>Personalized PageRank recommends songs by analyzing a graph where each node represents a music item
+                    (song or video), and edges connect items that are frequently played together or appear in similar
+                    user sessions. The algorithm performs a <strong>random walk</strong> starting from a user's recently
+                    played items, with a probability of "restarting" back to the original song to ensure relevance. This
+                    results in a ranking of nearby content based on how often it can be reached through the walk.</p>
+
+                <h3 class="component-subtitle">Problems It Solves</h3>
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <strong>Cold-start:</strong> Suggests relevant content even when items have few interactions by
+                        leveraging related nodes
+                    </div>
+                    <div class="benefit-item">
+                        <strong>Session continuity:</strong> Captures transitions between songs in a listening session
+                    </div>
+                    <div class="benefit-item">
+                        <strong>Indirect relationships:</strong> Finds connections not immediately visible (e.g., songs
+                        that are 2-3 hops away but related through others)
+                    </div>
+                    <div class="benefit-item">
+                        <strong>Real-time personalization:</strong> Provides fast, session-aware recommendations
+                    </div>
+                </div>
+
+                <h3 class="component-subtitle">Efficiency & Scalability</h3>
+                <p>Personalized PageRank avoids full graph traversal and focuses on local neighborhoods, making it
+                    scalable for millions of songs and users. It's often combined with approximate methods or
+                    precomputed partial results for real-time use.</p>
+
+                <div class="complexity-info">
+                    <strong>Time Complexity Details:</strong><br>
+                    • O(V + E) per iteration, where V = number of nodes (songs/videos), E = number of edges
+                    (co-visitation links)<br>
+                    • Typically converges in 10-20 iterations, depending on precision
+                </div>
+
+                <h3 class="component-subtitle">Benefits</h3>
+                <ul style="margin-left: 20px;">
+                    <li>High-quality, context-aware recommendations</li>
+                    <li>Balances freshness (recent interactions) and diversity (graph structure)</li>
+                    <li>Naturally supports exploration and discovery</li>
+                </ul>
+
+                <a href="https://github.com/danieljunhee/Tutorial-on-Personalized-PageRank/blob/master/Personalized_PageRank_Tutorial.ipynb"
+                    class="github-link" target="_blank">
+                    📚 click me for more detail
+                </a>
+
+                <a href="https://github.com/danieljunhee/Tutorial-on-Personalized-PageRank/blob/master/Personalized_PageRank_Tutorial.ipynb"
+                    class="github-link" target="_blank">
+                    📚 Personalized PageRank implimentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Playlist Generation -->
+    <section class="section">
+        <div class="container">
+            <div class="component">
+                <h2 class="component-title">2. Playlist Generation</h2>
+
+                <p style="font-size: 1.1rem; margin-bottom: 25px;">YouTube Music playlist generation feature allows
+                    users to create and manage personalized playlists seamlessly. This functionality uses a linked list
+                    data structure to handle the order and metadata of songs efficiently, making it easy to add, remove,
+                    or rearrange tracks. The linked list structure ensures that playlist operations, such as inserting
+                    or deleting songs, are performed with optimal time complexity. To enhance the playlist creation
+                    experience, YouTube Music employs a greedy algorithm for playlist optimization, which selects songs
+                    based on user preferences and listening habits, ensuring that each playlist offers a coherent and
+                    enjoyable listening experience.</p>
+
+                <h3 class="component-subtitle">Playlist Operations Complexity</h3>
+                <table class="operations-table">
+                    <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>Singly Linked List</th>
+                            <th>Doubly Linked List</th>
+                            <th>Explanation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Insert at head</strong></td>
+                            <td>O(1)</td>
+                            <td>O(1)</td>
+                            <td>Just change/add pointers at the beginning</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Insert at tail</strong></td>
+                            <td>O(n)</td>
+                            <td>O(1) (with tail ptr)</td>
+                            <td>Singly needs traversal; doubly can store a tail pointer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Insert in middle</strong></td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                            <td>Requires traversal to the position first</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Delete at head</strong></td>
+                            <td>O(1)</td>
+                            <td>O(1)</td>
+                            <td>Adjust head pointer (and possibly prev in doubly)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Delete at tail</strong></td>
+                            <td>O(n)</td>
+                            <td>O(1) (with tail ptr)</td>
+                            <td>Singly must traverse; doubly can go backwards</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Delete in middle</strong></td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                            <td>Must find node first, then adjust links</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Search</strong></td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                            <td>Linear traversal needed (no indexing)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Traversal (full)</strong></td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                            <td>Visit all nodes once</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reverse list</strong></td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                            <td>Re-link all nodes</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <a href="./Doubly Linked List.c" class="github-link" target="_blank">
+                    📚 Implimentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Music Search -->
+    <section class="section">
+        <div class="container">
+            <div class="component">
+                <h2 class="component-title">3. Music Search</h2>
+
+                <div class="algorithm-details">
+                    <h3 class="component-subtitle">Algorithm: Semantic/Vector Search</h3>
+
+                    <p> Semantic/Vector Search transforms the way we find music by
+                        understanding the <em>meaning</em> or <em>intent</em> behind your search query, rather than just
+                        matching keywords. It works by converting both your search query (like "upbeat song for working
+                        out" or "lyrics that go like 'shine bright like a diamond'") and the information about songs in
+                        the database (titles, lyrics, artist descriptions, genre, user tags) into numerical
+                        representations called "vector embeddings".</p>
+
+                    <p>Imagine a vast multi-dimensional space where each song and each query is a point (vector). Songs
+                        with similar meanings, moods, lyrical themes, or styles will be located close to each other in
+                        this space. When you search, the system converts your query into a vector and then efficiently
+                        finds the song vectors that are nearest to your query vector.</p>
+                </div>
+
+                <section class="section">
+                    <div class="container">
+                        <div class="architecture-image-container">
+                            <img src="./vector1.png" alt="Personalized Page ranking" class="architecture-image">
+                        </div>
+                    </div>
+                </section>
+
+                <h3 class="component-subtitle">Key Advantages</h3>
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <strong>Keyword Limitation & Literalness:</strong> Semantic Search understands word meanings, so
+                        it can return songs like "joyful melody" when you search for "happy tune," even if exact words
+                        don't match
+                    </div>
+                    <div class="benefit-item">
+                        <strong>Vague or Descriptive Queries:</strong> It can interpret abstract queries like
+                        "instrumental music that feels like a space journey" by matching them with songs having similar
+                        contextual metadata
+                    </div>
+                    <div class="benefit-item">
+                        <strong>Synonyms and Ambiguity:</strong> Semantic embeddings recognize that words like "sad,"
+                        "melancholy," and "blue" convey similar emotions, providing more accurate mood-based results
+                    </div>
+                    <div class="benefit-item">
+                        <strong>Discovering Related Content:</strong> Instead of relying on exact terms, Semantic Search
+                        surfaces songs that are stylistically or thematically related based on proximity in vector space
+                    </div>
+                </div>
+
+                <h3 class="component-subtitle">Data Structures Used</h3>
+                <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    <li><strong>Vector Embeddings:</strong> Dense arrays capturing semantic meaning of queries and song
+                        metadata</li>
+                    <li><strong>Vector Index:</strong> Specialized structures (e.g., HNSW, FAISS, Annoy) enabling fast
+                        Approximate Nearest Neighbor (ANN) searches</li>
+                </ul>
+
+                <div class="complexity-info">
+                    <strong>Time Complexity (Conceptual):</strong><br>
+                    • Query Embedding: O(L), where L is the query length (via neural network)<br>
+                    • ANN Search: O(log N) or O(polylog N), scalable to millions of songs—far more efficient than naive
+                    O(N × D) search
+                </div>
+
+                <a href="https://medium.com/@sudhiryelikar/understanding-similarity-or-semantic-search-and-vector-databases-5f9a5ba98acb"
+                    class="github-link" target="_blank">
+                    📚 Algorithm Details
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Features -->
+    <section class="section">
+        <div class="container">
+            <div class="component">
+                <h2 class="component-title">4. Social Features</h2>
+
+                <p style="font-size: 1.1rem; margin-bottom: 25px;">YouTube Music social features allow users to connect
+                    with friends, share music, follow artists, and collaborate on playlists. These features use a graph
+                    data structure to model relationships and interactions between users and artists. By implementing
+                    algorithms such as Breadth-First Search (BFS) and Depth-First Search (DFS), YouTube Music
+                    efficiently manages and traverses these connections, enabling users to discover new music through
+                    their social network. The social graph helps in generating personalized recommendations based on a
+                    user's social activity and preferences, fostering a community-oriented experience on the platform.
+                </p>
+
+                <section class="section">
+                    <div class="container">
+                        <div class="architecture-image-container">
+                            <img src="./DFS_BFS.png" alt="Personalized Page ranking" class="architecture-image">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="container">
+                        <div class="architecture-image-container">
+                            <img src="./DFS_BFS_Analysis.png" alt="Personalized Page ranking"
+                                class="architecture-image">
+                        </div>
+                    </div>
+                </section>
+
+                <div class="algorithm-details">
+                    <p><strong>Data Structure:</strong> Graph</p>
+                    <p><strong>Algorithm:</strong> BFS/DFS for Connectivity
+                    <p><strong>Complexity:</strong> O(V + E), where V is the number of vertices (users) and E is the
+                        number of edges (connections)</p>
+                </div>
+
+                <a href="https://medium.com/@jwbtmf/dfs-vs-bfs-algorithms-for-graph-database-5948f0fd2057"
+                    class="github-link" target="_blank">
+                    📚 Algorithm Details
+                </a>
+            </div>
+        </div>
+    </section>
+

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sorting Algorithms Explained Simply</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #333;
+            padding: 20px;
+            line-height: 1.7;
+        }
+
+        h1 {
+            text-align: center;
+            color: #222;
+        }
+
+        .algorithm {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        code {
+            background: #ecf0f1;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .complexity {
+            background-color: #eaf2ff;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .btn-link {
+            background-color: #0077cc;
+            /* deep blue */
+            color: #fff;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 30px;
+        }
+
+        .btn-link:hover {
+            background-color: #005fa3;
+            /* slightly darker on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Sorting Algorithms</h1>
+
+    <div class="algorithm">
+        <h2>Timsort</h2>
+        <p>
+            Timsort is sorting algorithm used in real-world programming languages like Python and Java. It works by
+            looking for small already sorted parts (called runs) in the data and then combining them smartly.
+        </p>
+        <p>
+            If it finds a part that's already sorted, it keeps it that way and just builds around it. It mixes the best
+            ideas from Insertion Sort (good for small data) and Merge Sort (good for big data).
+        </p>
+        <div class="complexity">
+            Worst-case Time: O(n log n) | Space: O(n)
+        </div>
+
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a class="btn-link" href="https://www.chrislaux.com/timsort" target="_blank">
+                📘 Read About Tim Sort on Medium
+            </a>
+            <a class="btn-link" href="./code/BTree.java" target="_blank">
+                📘 Code: Tim Sort
+            </a>
+        </div>
+    </div>
+
+    <div class="algorithm">
+        <h2>Counting Sort</h2>
+        <p>
+            Counting Sort is a non-comparison-based sorting algorithm that works by counting the number of occurrences of each distinct element in the input, storing those counts in an auxiliary array, and then calculating positions to place each element in the sorted output. It runs in O(n + k) time, where k is the range of input values, making it extremely fast when the range is small compared to n. In the Android OS, it can be useful in scenarios like sorting process priorities, sensor event timestamps within bounded ranges, or color values in image processing, where the possible values are limited and known in advance. Unlike comparison-based algorithms such as QuickSort or MergeSort (which have O(n log n) lower bounds), Counting Sort leverages direct indexing rather than element comparisons, allowing linear-time sorting for bounded integer ranges. It is preferred when data size is large but value range is small and integers-based, and stability is required for preserving order of equal elements.
+        </p>
+        
+        <p style="text-align: center;">
+                <img src="./ResourceManagement/counting Sort.jpeg" alt="Red-Black" width="500px">
+        </p>
+
+        <p>
+            It's like counting how many people got each score in a test and then arranging them in order.
+        </p>
+        <div class="complexity">
+            Worst-case Time: O(n + k) | Space: O(k)
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+                <a class="btn-link"
+                href=" https://yuminlee2.medium.com/counting-sort-algorithm-392560fe570e"
+                target="_blank">
+                📘 Read About Counting Sort on Medium
+            </a>
+        </div>
+    </div>
+    </div>
+
+    <div class="algorithm">
+        <h2>Merge Sort</h2>
+        <p>
+            Merge Sort breaks your list into two halves again and again until each part has just one item. Then it
+            starts merging them back in order.
+        </p>
+
+        <div class="algorithm">
+            <h2>Live Merge Sort Visualizer</h2>
+            <iframe src="https://www.sortvisualizer.com/mergesort/" width="100%" height="600"
+                style="border: 1px solid #ccc; border-radius: 8px;" loading="lazy">
+            </iframe>
+            <div class="credits">
+                Sorting visualizer by
+                <a href="https://github.com/Myphz/sortvisualizer" target="_blank">Myphz</a>.
+            </div>
+        </div>
+       
+        <p>
+            Think of it like sorting small piles of cards, then merging those piles together into one big sorted pile.
+        </p>
+        <div class="complexity">
+            Worst-case Time: O(n log n) | Space: O(n)
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a class="btn-link"
+                href="https://medium.com/karuna-sehgal/a-simplified-explanation-of-merge-sort-77089fe03bb2"
+                target="_blank">
+                📘 Read About Merge Sort on Medium
+            </a>
+            <a class="btn-link" href="./code/MSort.java" target="_blank">
+                📘 Code: Merge Sort
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

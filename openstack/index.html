@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStack Visualized | Interactive Learning Platform</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #ED1944;
+            --primary-dark: #C41E3A;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #050505;
+            --light-text: #ffffff;
+            --lighter-text: rgba(255,255,255,0.9);
+            --muted-text: rgba(255,255,255,0.7);
+            --card-bg: rgba(30,30,30,0.8);
+            --border-color: rgba(237,25,68,0.3);
+            --highlight: rgba(237,25,68,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+            border-radius: 5px;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* Layout Components */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--primary), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* Particle Background */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(237,25,68,0.5);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-100px) translateX(100px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            color: var(--muted-text);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        /* Interactive Concept Cards */
+        .concept-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .concept-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--highlight),
+                transparent
+            );
+            transition: 0.6s;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(237,25,68,0.2);
+            border-color: var(--primary);
+        }
+
+        .concept-card:hover::before {
+            left: 100%;
+        }
+
+        .concept-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .concept-card p {
+            color: var(--muted-text);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Interactive Diagram */
+        .interactive-diagram {
+            width: 100%;
+            height: 500px;
+            background: rgba(30,30,30,0.5);
+            border-radius: 12px;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .diagram-node {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+            z-index: 2;
+        }
+
+        .diagram-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(237,25,68,0.3);
+            border-color: var(--primary);
+        }
+
+        .diagram-node i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .diagram-node span {
+            font-size: 0.9rem;
+            text-align: center;
+            color: var(--light-text);
+        }
+
+        .diagram-connection {
+            position: absolute;
+            height: 2px;
+            background: rgba(237,25,68,0.5);
+            transform-origin: left center;
+            z-index: 1;
+        }
+
+        /* Animated Tabs */
+        .tabs-container {
+            margin: 3rem 0;
+        }
+
+        .tabs-header {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: none;
+            color: var(--muted-text);
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--light-text);
+        }
+
+        .tab-btn.active::after {
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 3D Flip Card */
+        .flip-card {
+            perspective: 1000px;
+            width: 300px;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .concept-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="particles" id="particles"></div>
+        <div class="container hero-content">
+            <h1>OpenStack Visualized</h1>
+            <p>An interactive exploration of OpenStack architecture and components</p>
+            <a href="#concepts" class="cta-button">Start Exploring</a>
+        </div>
+    </section>
+
+    <!-- Core Concepts Section -->
+    <section class="section" id="concepts">
+        <div class="container">
+            <h2 class="section-title">Core Concepts</h2>
+            <p class="section-subtitle">Understand the fundamental building blocks of OpenStack</p>
+            
+            <div class="concept-cards">
+                <div class="concept-card">
+                    <h3>Compute (Nova)</h3>
+                    <p>Manages virtual machines and provides compute resources on demand.</p>
+                    <div class="card-footer">
+                        <button class="learn-more">Explore Nova</button>
+                    </div>
+                </div>
+                
+                <div class="concept-card">
+                    <h3>Networking (Neutron)</h3>
+                    <p>Provides networking as a service between interface devices.</p>
+                    <div class="card-footer">
+                        <button class="learn-more">Explore Neutron</button>
+                    </div>
+                </div>
+                
+                <div class="concept-card">
+                    <h3>Storage (Cinder/Swift)</h3>
+                    <p>Block and object storage services for persistent data.</p>
+                    <div class="card-footer">
+                        <button class="learn-more">Explore Storage</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Architecture Diagram -->
+    <section class="section" style="background: var(--darker-bg);">
+        <div class="container">
+            <h2 class="section-title">Interactive Architecture</h2>
+            <p class="section-subtitle">Click on components to learn how they interact</p>
+            
+            <div class="interactive-diagram" id="architectureDiagram">
+                <div class="diagram-connection" id="conn1"></div>
+                <div class="diagram-connection" id="conn2"></div>
+                <div class="diagram-connection" id="conn3"></div>
+                
+                <div class="diagram-node" style="top: 50px; left: 50%; transform: translateX(-50%);">
+                    <i class="fas fa-user"></i>
+                    <span>Dashboard (Horizon)</span>
+                </div>
+                
+                <div class="diagram-node" style="top: 200px; left: 20%;">
+                    <i class="fas fa-server"></i>
+                    <span>Compute (Nova)</span>
+                </div>
+                
+                <div class="diagram-node" style="top: 200px; left: 80%;">
+                    <i class="fas fa-network-wired"></i>
+                    <span>Networking (Neutron)</span>
+                </div>
+                
+                <div class="diagram-node" style="top: 350px; left: 30%;">
+                    <i class="fas fa-hdd"></i>
+                    <span>Block Storage (Cinder)</span>
+                </div>
+                
+                <div class="diagram-node" style="top: 350px; left: 70%;">
+                    <i class="fas fa-database"></i>
+                    <span>Object Storage (Swift)</span>
+                </div>
+                
+                <div class="diagram-node" style="top: 200px; left: 50%; transform: translateX(-50%);">
+                    <i class="fas fa-key"></i>
+                    <span>Identity (Keystone)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Component Deep Dive -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Component Deep Dive</h2>
+            
+            <div class="tabs-container">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="nova">Nova</button>
+                    <button class="tab-btn" data-tab="neutron">Neutron</button>
+                    <button class="tab-btn" data-tab="cinder">Cinder</button>
+                    <button class="tab-btn" data-tab="keystone">Keystone</button>
+                </div>
+                
+                <div class="tab-content active" id="nova-tab">
+                    <h3>Compute Service (Nova)</h3>
+                    <p>Nova is the OpenStack project that provides a way to provision compute instances (virtual machines).</p>
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <i class="fas fa-server"></i>
+                                <h4>Nova Architecture</h4>
+                                <p>Click to flip and learn about components</p>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Key Components</h4>
+                                <ul>
+                                    <li>nova-api</li>
+                                    <li>nova-scheduler</li>
+                                    <li>nova-compute</li>
+                                    <li>nova-conductor</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="neutron-tab">
+                    <h3>Networking Service (Neutron)</h3>
+                    <p>Neutron provides networking as a service between interface devices managed by other OpenStack services.</p>
+                    <!-- Similar flip card for Neutron -->
+                </div>
+                
+                <!-- Additional tab contents -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Create particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random properties
+            const size = Math.random() * 5 + 2;
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            const opacity = Math.random() * 0.5 + 0.1;
+            const duration = Math.random() * 20 + 10;
+            const delay = Math.random() * 5;
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${posX}%`;
+            particle.style.top = `${posY}%`;
+            particle.style.opacity = opacity;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `${delay}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabBtns.forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                btn.classList.add('active');
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+
+        // Diagram connections
+        function drawConnections() {
+            const diagram = document.getElementById('architectureDiagram');
+            const nodes = diagram.querySelectorAll('.diagram-node');
+            
+            // Simple straight connections for demo
+            const conn1 = document.getElementById('conn1');
+            const conn2 = document.getElementById('conn2');
+            const conn3 = document.getElementById('conn3');
+            
+            // Position connections between nodes
+            // In a real implementation, you would calculate positions dynamically
+            conn1.style.width = '100px';
+            conn1.style.top = '110px';
+            conn1.style.left = 'calc(50% - 50px)';
+            conn1.style.transform = 'rotate(0deg)';
+            
+            conn2.style.width = '150px';
+            conn2.style.top = '260px';
+            conn2.style.left = 'calc(20% - 75px)';
+            conn2.style.transform = 'rotate(45deg)';
+            
+            conn3.style.width = '150px';
+            conn3.style.top = '260px';
+            conn3.style.left = 'calc(80% - 75px)';
+            conn3.style.transform = 'rotate(-45deg)';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            drawConnections();
+            
+            // Add click handlers for diagram nodes
+            document.querySelectorAll('.diagram-node').forEach(node => {
+                node.addEventListener('click', () => {
+                    const service = node.querySelector('span').textContent;
+                    alert(`You clicked on ${service}. In a full implementation, this would show detailed information.`);
+                });
+            });
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.concept-card, .section-title, .section-subtitle').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
