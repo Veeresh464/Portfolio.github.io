@@ -14,7 +14,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
 
     try {
         // Send data to your Express API
-        const response = await fetch('http://localhost:5000/contact', {
+        const response = await fetch('https://portfolio-3qj2.onrender.com/contact', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
